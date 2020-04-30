@@ -15,14 +15,11 @@ def myXForceChecker(url):
     printResult = []
     # e.g. url = "https://exchange.xforce.ibmcloud.com/ip//114.200.4.207"
     # IP Report
-    print(url)
-    
     myResult1 = requests.get(url, auth=HTTPBasicAuth('f276aa3a-f95a-4222-b112-2640399834d7',
                                                      'd2ecb5be-6648-450f-b632-72126a42bec0'))
-
     c1 = myResult1.content
     myJson1 = json.loads(c1)
-    print("comong here ibm")
+
     # >>>>>>>>>>>  IP/Domain Report Check <<<<<<<<<<<<<
     # ...........
     '''
@@ -37,7 +34,7 @@ def myXForceChecker(url):
     if "geo" in myJson1:
         for key, value in myJson1["geo"].items():
             geo = "Country" + ": " + str(value)
-            #print(geo)
+            print(geo)
             printResult.append(geo)
             # Only print country
             # (Ingore country code)
@@ -45,20 +42,20 @@ def myXForceChecker(url):
     # [Print] Overrall Risk Score
     if "score" in myJson1:
         if myJson1["score"] == 1:
-            #print("Risk Score: " + str(myJson1["score"]) + " (low)")
+            print("Risk Score: " + str(myJson1["score"]) + " (low)")
             printResult.append("Risk Score: " + str(myJson1["score"]) + " (low)")
         else:
-            #print("Risk Score: " + str(myJson1["score"]))
+            print("Risk Score: " + str(myJson1["score"]))
             printResult.append("Risk Score: " + str(myJson1["score"]))
     # [Print] Categorization:
     if "cats" in myJson1:
         if myJson1["cats"]:
             for key, value in myJson1["cats"].items():
                 cat = str(key) + " (" + str(value) + "%)"
-                #print("Categorization: " + cat)
+                print("Categorization: " + cat)
                 printResult.append("Categorization: " + cat)
         else:
-            #print("Categorization: Unsuspicious")
+            print("Categorization: Unsuspicious")
             printResult.append("Categorization: Unsuspicious")
 
 
@@ -66,16 +63,16 @@ def myXForceChecker(url):
     if "result" in myJson1:
         myJsonResult = myJson1["result"]
         if myJsonResult["score"] == 1:
-            #print("Risk Score: " + str(myJsonResult["score"]) + " (low)")
+            print("Risk Score: " + str(myJsonResult["score"]) + " (low)")
             printResult.append("Risk Score: " + str(myJsonResult["score"]) + " (low)")
         else:
-            #print("Risk Score: " + str(myJsonResult["score"]))
+            print("Risk Score: " + str(myJsonResult["score"]))
             printResult.append("Risk Score: " + str(myJsonResult["score"]))
 
         if myJsonResult["categoryDescriptions"]:
             for key, value in myJsonResult["categoryDescriptions"].items():
                 cat = "<" + str(key).replace(" / ", "|") + ">: " + str(value)
-                #print(cat)
+                print(cat)
                 printResult.append(cat)
 
     return printResult

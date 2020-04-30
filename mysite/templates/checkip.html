@@ -131,18 +131,36 @@ a:hover {
 {% if status == '00' %}
 <span class="s2">Possible Good Ip</span>
 {% endif %}
-<p style = "white-space: pre-wrap"}>{{part1}}</p>
+{% if part4 is not null %}
+<h1> -------------------------------- </h1>
+{% endif %}
+{% if part4 is not null %}
+<h1> [.] PYSBIL </h1>
+<p style = "white-space: pre-wrap">{{part1}}</p>
+{% endif %}
+{% if part4 is not null %}
+{% if part4 is not null %}
+<h1> -------------------------------- </h1>
+{% endif %}
+<h1> [.] Sans Result: </h1>
+{% endif %}
 {% for info1 in part3 %}
 <p style = "white-space: pre-wrap">{{info1}}</p>
 {% endfor %}
 {% if part4 is not null %}
 <h1> -------------------------------- </h1>
 {% endif %}
+{% if part4 is not null %}
+<h1> [.] AbuseIPDB Result: </h1>
+{% endif %}
 {% for info1 in part2 %}
 <p>{{info1}}</p>
 {% endfor %}
 {% if part4 is not null %}
 <h1> -------------------------------- </h1>
+{% endif %}
+{% if part4 is not null %}
+<h1> [.] IBM X-Force Result:</h1>
 {% endif %}
 {% for info1 in part4 %}
 <p>{{info1}}</p>

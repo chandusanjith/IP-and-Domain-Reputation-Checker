@@ -133,12 +133,11 @@
                    value="Upload"
                    style="border: 1px solid green; padding:5px; border-radius: 2px; cursor: pointer;">
           </form>
-          <form action = "/ipxl/" method = "post" enctype="multipart/form-data">
-         What improvements you want in College?
+          <form action = "/ipbulk/" method = "post" >{% csrf_token %}
+         Paste IP's if you dont want to upload xls 
          <br>
-         <textarea rows = "5" cols = "60" name = "description">
-            Enter details here...
-         </textarea><br>
+         <textarea type="text" name ="names" rows = "5" cols = "60" name = "description">
+         </textarea></br>
          <input type = "submit" value = "submit" style="border: 1px solid green; padding:5px; border-radius: 2px; cursor: pointer;" >
       </form>
           <p>

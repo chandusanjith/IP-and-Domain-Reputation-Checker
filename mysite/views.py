@@ -140,6 +140,26 @@ def checkIBM(ipaddress):
     return result
 
 
+def ReadBulk(request):
+    ipss = request.POST['names']
+    ip_list = ipss.split()
+    ref = create_ref_code()
+    ip_length = len(ip_list)
+    ref_list = list()
+    for i in range(ip_length):
+      ref_list.append(ref)
+    print("reflist")
+    print(ref_list)
+    p = Pool(10)
+    p.map(check, ip_list, ref_list)
+    result_to_display = ips.objects.filter(reference = ref_list[0])
+    context = {'data_ip': result_to_display,
+                'reference': ref_list[0],
+                'button': 1}
+
+    return render(request, 'index.html', context)
+    
+
 def ReadXl(request):
     if "GET" == request.method:
         return render(request, 'index.html', {'button': 0})
@@ -219,9 +239,7 @@ def check(ip, ref):
 
   if req4 == "True":
       dbremark = status4[0]
-                    
-                
-
+        
   a = ips(reference = ref, ipaddress = ip, status = dbstatus, remarks = dbremark)
   a.save()
 
