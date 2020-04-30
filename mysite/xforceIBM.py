@@ -17,7 +17,7 @@ def myXForceChecker(url):
     # IP Report
     print(url)
     
-    myResult1 = requests.get(url, data={'url': 'websiteUrl'}, auth=HTTPBasicAuth('f276aa3a-f95a-4222-b112-2640399834d7',
+    myResult1 = requests.get(url, auth=HTTPBasicAuth('f276aa3a-f95a-4222-b112-2640399834d7',
                                                      'd2ecb5be-6648-450f-b632-72126a42bec0'))
 
     c1 = myResult1.content
