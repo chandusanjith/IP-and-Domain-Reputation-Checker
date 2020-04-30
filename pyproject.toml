@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "django-template"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+Django = "^3.0"
+bs4 = "^0.0.1"
+dnspython = "^1.16"
+pandas = "^1.0"
+openpyxl = "^3.0"
+xlwt = "^1.3"
+pydnsbl = "^1.0"
+pathos = "^0.2.5"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
