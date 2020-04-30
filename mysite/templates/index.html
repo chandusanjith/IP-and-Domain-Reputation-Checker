@@ -133,7 +133,14 @@
                    value="Upload"
                    style="border: 1px solid green; padding:5px; border-radius: 2px; cursor: pointer;">
           </form>
-          <div id="loader"></div>
+          <form action = "/ipxl/" method = "post" enctype="multipart/form-data">
+         What improvements you want in College?
+         <br>
+         <textarea rows = "5" cols = "60" name = "description">
+            Enter details here...
+         </textarea><br>
+         <input type = "submit" value = "submit" style="border: 1px solid green; padding:5px; border-radius: 2px; cursor: pointer;" >
+      </form>
           <p>
                    {% if button == 1 %}
                   <form action="/downxls/{{reference}}/" method = "POST" enctype="multipart/form-data">
