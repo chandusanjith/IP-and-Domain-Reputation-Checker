@@ -1,0 +1,150 @@
+{% extends  'Main.html' %}
+{% block content %}
+
+<style>
+  @import url(https://fonts.googleapis.com/css?family=Roboto);
+  span.s1 {
+  text-align: center;
+  font-size: 10rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #3C4447;
+}
+span.s2 {
+  text-align: center;
+  font-size: 5rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #3C4447;
+}
+  :root {
+  background: #f5f6fa;
+  color: #9c9c9c;
+  font: 1rem "PT Sans", sans-serif;
+}
+
+html,
+body,
+.container {
+  height: 20%;
+}
+
+a {
+  color: inherit;
+}
+a:hover {
+  color: #7f8ff4;
+}
+
+.container {
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+          flex-direction: column;
+  -webkit-box-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+          justify-content: center;
+}
+
+.uppercase {
+  text-transform: uppercase;
+}
+
+.btn {
+  display: inline-block;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  border: 0;
+  outline: 0;
+  padding: 0;
+  -webkit-transition: all 200ms ease-in;
+  transition: all 200ms ease-in;
+  cursor: pointer;
+}
+.btn--primary {
+  background: #7f8ff4;
+  color: #fff;
+  box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.1);
+  border-radius: 2px;
+  padding: 12px 36px;
+}
+.btn--primary:hover {
+  background: #6c7ff2;
+}
+.btn--primary:active {
+  background: #7f8ff4;
+  box-shadow: inset 0 0 10px 2px rgba(0, 0, 0, 0.2);
+}
+.btn--inside {
+  margin-left: -96px;
+}
+
+.form__field {
+  width: 360px;
+  background: #fff;
+  color: #a3a3a3;
+  font: inherit;
+  box-shadow: 0 20px 18px 0 rgba(0, 0, 0, 0.1);
+  border: 0;
+  outline: 0;
+  padding: 22px 18px;
+}
+
+</style>
+<div class="mt-2">
+      {% if messages %} {% for message in messages %}
+      <div
+        class="alert alert-{{ message.tags }} alert-dismissible fade show"
+        role="alert"
+      >
+      {{ message }}
+
+        <button
+          type="button"
+          class="close"
+          data-dismiss="alert"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    </div>
+
+    {% endfor %} 
+    {% endif %} 
+
+
+<div class="container">
+	<div class="container__item">
+		<form action = "/checksingleip/" method = "POST"> {% csrf_token %}
+			<input type="text" class="form__field" placeholder="IP address goes here" name = "singleip" >
+			<button type="submit" class="btn btn--primary btn--inside uppercase">Check</button>
+		</form>
+	</div>
+</div>
+{%if status == '09'%}
+<span class="s1">BLOCKED</span>
+{% endif %}
+{% if status == '00' %}
+<span class="s2">Possible Good Ip</span>
+{% endif %}
+<p style = "white-space: pre-wrap"}>{{part1}}</p>
+{% for info1 in part3 %}
+<p style = "white-space: pre-wrap">{{info1}}</p>
+{% endfor %}
+{% if part4 is not null %}
+<h1> -------------------------------- </h1>
+{% endif %}
+{% for info1 in part2 %}
+<p>{{info1}}</p>
+{% endfor %}
+{% if part4 is not null %}
+<h1> -------------------------------- </h1>
+{% endif %}
+{% for info1 in part4 %}
+<p>{{info1}}</p>
+{% endfor %}
+{% endblock %}
