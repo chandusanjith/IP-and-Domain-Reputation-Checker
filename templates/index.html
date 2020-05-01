@@ -146,7 +146,7 @@
             {% csrf_token %}      
         <input type="submit"
                     id = "as200"
-                   value="Download Result"
+                   value="Download Result in XLS"
                    style="border: 1px solid green; padding:5px; border-radius: 2px; cursor: pointer;">
          </form>
           {% endif %}
@@ -158,7 +158,11 @@
     <tr>
       <th scope="col">Ip Address</th>
       <th scope="col">Status</th>
-      <th scope="col">Remarks</th>
+      <th scope="col">AbuseIPDB Result</th>
+      <th scope="col">Sans Result</th>
+      <th scope="col">PYSBIL Result</th>
+      <th scope="col">VirusTotal Result</th>
+      <th scope="col">IBM X-Force Result</th>
     </tr>
   </thead>
   {% for item in data_ip %} 
@@ -167,6 +171,10 @@
       <td>{{item.ipaddress}}</td>
       <td>{{item.status}}</td>
       <td style = "white-space: pre-wrap">{{item.remarks}}</td>
+      <td style = "white-space: pre-wrap">{{item.Sans}}</td>
+      <td style = "white-space: pre-wrap">{{item.Pysbil}}</td>
+      <td style = "white-space: pre-wrap">{{item.VirusTotal}}</td>
+      <td style = "white-space: pre-wrap">{{item.IbmXForce}}</td>
     </tr>
   </tbody>
   {% endfor %}

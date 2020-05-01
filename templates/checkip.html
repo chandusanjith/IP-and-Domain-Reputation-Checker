@@ -135,6 +135,24 @@ a:hover {
 <h1> -------------------------------- </h1>
 {% endif %}
 {% if part4 is not null %}
+<h1> [.] IBM X-Force Result:</h1>
+{% endif %}
+{% for info1 in part4 %}
+<p>{{info1}}</p>
+{% endfor %}
+{% if part4 is not null %}
+<h1> -------------------------------- </h1>
+{% endif %}
+{% if part4 is not null %}
+<h1> [.] VirusTotal Result:</h1>
+{% endif %}
+{% if part4 is not null %}
+<p style = "white-space: pre-wrap">{{part5}}</p>
+{% endif %}
+{% if part4 is not null %}
+<h1> -------------------------------- </h1>
+{% endif %}
+{% if part4 is not null %}
 <h1> [.] PYSBIL </h1>
 <p style = "white-space: pre-wrap">{{part1}}</p>
 {% endif %}
@@ -154,15 +172,6 @@ a:hover {
 <h1> [.] AbuseIPDB Result: </h1>
 {% endif %}
 {% for info1 in part2 %}
-<p>{{info1}}</p>
-{% endfor %}
-{% if part4 is not null %}
-<h1> -------------------------------- </h1>
-{% endif %}
-{% if part4 is not null %}
-<h1> [.] IBM X-Force Result:</h1>
-{% endif %}
-{% for info1 in part4 %}
 <p>{{info1}}</p>
 {% endfor %}
 {% endblock %}

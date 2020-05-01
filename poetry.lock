@@ -280,6 +280,14 @@ version = "0.3.1"
 
 [[package]]
 category = "main"
+description = "Complete, Pythonic VirusTotal Public API 2.0 client"
+name = "virustotal2"
+optional = false
+python-versions = "*"
+version = "1.1"
+
+[[package]]
+category = "main"
 description = "Radically simplified static file serving for WSGI applications"
 name = "whitenoise"
 optional = false
@@ -298,7 +306,7 @@ python-versions = "*"
 version = "1.3.0"
 
 [metadata]
-content-hash = "d5cd765a6b94d2d4923c9a5b57264e645f5f96825769c54f3855fb253aa0832c"
+content-hash = "47322cbfd51b7df925849f7a4638b88a7d0be48df55e13f4b65281c431c94e59"
 python-versions = "^3.7"
 
 [metadata.files]
@@ -486,6 +494,10 @@ soupsieve = [
 sqlparse = [
     {file = "sqlparse-0.3.1-py2.py3-none-any.whl", hash = "sha256:022fb9c87b524d1f7862b3037e541f68597a730a8843245c349fc93e1643dc4e"},
     {file = "sqlparse-0.3.1.tar.gz", hash = "sha256:e162203737712307dfe78860cc56c8da8a852ab2ee33750e33aeadf38d12c548"},
+]
+virustotal2 = [
+    {file = "virustotal2-1.1-py2.7.egg", hash = "sha256:560143b56d71e298f50da66faab0b2066099dd1f4a43ebc1add4f97d92fb3d77"},
+    {file = "virustotal2-1.1.tar.gz", hash = "sha256:302f4d89166f5fd762c8ac3d52172dc9031eb36f41bfb8be26b626f949393cc5"},
 ]
 whitenoise = [
     {file = "whitenoise-5.0.1-py2.py3-none-any.whl", hash = "sha256:62556265ec1011bd87113fb81b7516f52688887b7a010ee899ff1fd18fd22700"},

@@ -5,7 +5,10 @@ class ips(models.Model):
   ipaddress  = models.TextField()
   status = models.TextField()
   remarks = models.TextField(default="")
-
+  Sans = models.TextField(default="")
+  Pysbil = models.TextField(default="")
+  VirusTotal = models.TextField(default="")
+  IbmXForce = models.TextField(default="")
 
 class contacted(models.Model):
 	name = models.TextField()

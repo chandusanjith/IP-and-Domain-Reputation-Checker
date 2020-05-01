@@ -8,6 +8,8 @@ from mysite.abuseipdb import abuseipdbChecker
 from mysite.sans import sansChecker
 from mysite.myIPwhois import IPWhoisChecker
 from mysite.xforceIBM import myXForceChecker
+from mysite.VirusTotal import VirusTotalChecker
+
 import openpyxl
 from django.contrib import messages
 import xlwt
@@ -71,6 +73,18 @@ def checksingleip(request):
      # Call xforceIBM.py
     part4 = myXForceChecker("https://api.xforce.ibmcloud.com/ipr/" + ip)
      
+    part5 = VirusTotalChecker(ip)
+
+    print("virustotal")
+    print(part5)
+    if part5 != "POSSIBLY SAFE":
+        print("blk")
+        res5 = "True"
+    else:
+        print("noblk")
+        res5 = "False"
+       
+
     if part1 == True or part1 == False:
        ip_checker = pydnsbl.DNSBLIpChecker()
        result=ip_checker.check(ip)
@@ -88,7 +102,7 @@ def checksingleip(request):
         req2 = "True"
     else:
         req2 = "False"
-    if part1 == True or req2 == "True" or req3 == "True" or req4 == "True":
+    if part1 == True or req2 == "True" or req3 == "True" or req4 == "True" or res5 == "True":
         status = "09"
     else:
           status = "00"
@@ -97,6 +111,7 @@ def checksingleip(request):
              'part2': part2,
              'part3':part3,
              'part4': part4,
+             'part5':part5,
              'status': status}
     return render(request, 'checkip.html', context)    
 
@@ -205,6 +220,15 @@ def check(ip, ref):
   status2 = checkipchandu(ip)
   status3 = checkIBM(ip)
   status4 = abuseipdbChecker("https://www.abuseipdb.com/check/" + ip)
+  status5 = VirusTotalChecker(ip)
+
+  if status5 != "POSSIBLY SAFE":
+        print("blk")
+        res5 = "True"
+  else:
+        print("noblk")
+        res5 = "False"
+
   if not status4:
       req4 = "False"
   else:
@@ -217,30 +241,42 @@ def check(ip, ref):
       req2 = "True"
   else:
       req2 = "False"
-  if status1 == True or req2 == "True" or req3 == "True" or req4 == "True":
+  if status1 == True or req2 == "True" or req3 == "True" or req4 == "True" or res5 == "True":
       print('at block')
       dbstatus = "BLOCKED IP"
   else:
       print('at no block')
       dbstatus = "POSSIBLY GOOD IP"
-  dbremark = ''
-
-  if req3 == "True":
-     dbremark = status3
-                  
-  if status1 != True and req2 == "False" and req3 == "False" and "Spam" in status3[2]:
-      for res in status4:
-         dbremark  += res
-                
-  if status1 == True and req2 == "False" and req3 == "False" and "Spam" in status3[2]:
-      ip_checker = pydnsbl.DNSBLIpChecker()
-      result=ip_checker.check(ip)
-      dbremark = result.detected_by
+  
+  if res5 == "True":
+     virustotal = status5
+  else:
+    virustotal = "NIL"
+ 
 
   if req4 == "True":
-      dbremark = status4[0]
-        
-  a = ips(reference = ref, ipaddress = ip, status = dbstatus, remarks = dbremark)
+     abuse = status4[0]
+  else:
+     abuse = "NIL"
+
+  if req3 == "True":
+     ibm = status3
+  else:
+     ibm = "NIL"
+
+  if req2 == "True":
+     sans = status2
+  else:
+     sans = "NIL"
+  
+  if status1 == "True":
+     ip_checker = pydnsbl.DNSBLIpChecker()
+     result=ip_checker.check(ip)
+     dnsbl = result.detected_by
+  else:
+     dnsbl = "NIL"
+
+  a = ips(reference = ref, ipaddress = ip, status = dbstatus, remarks = abuse, Sans =sans, Pysbil =dnsbl , VirusTotal =   virustotal, IbmXForce = ibm)
   a.save()
 
 def export_users_xls(request, ref):
