@@ -220,14 +220,7 @@ def check(ip, ref):
   status2 = checkipchandu(ip)
   status3 = checkIBM(ip)
   status4 = abuseipdbChecker("https://www.abuseipdb.com/check/" + ip)
-  status5 = VirusTotalChecker(ip)
 
-  if status5 != "POSSIBLY SAFE":
-        print("blk")
-        res5 = "True"
-  else:
-        print("noblk")
-        res5 = "False"
 
   if not status4:
       req4 = "False"
@@ -241,17 +234,13 @@ def check(ip, ref):
       req2 = "True"
   else:
       req2 = "False"
-  if status1 == True or req2 == "True" or req3 == "True" or req4 == "True" or res5 == "True":
+  if status1 == True or req2 == "True" or req3 == "True" or req4 == "True":
       print('at block')
-      dbstatus = "BLOCKED IP"
+      dbstatus = "BLACKLISTED"
   else:
       print('at no block')
-      dbstatus = "POSSIBLY GOOD IP"
+      dbstatus = "POSSIBLY SAFE"
   
-  if res5 == "True":
-     virustotal = status5
-  else:
-    virustotal = "NIL"
  
 
   if req4 == "True":
@@ -269,14 +258,16 @@ def check(ip, ref):
   else:
      sans = "NIL"
   
-  if status1 == "True":
+  if status1 == True:
+     print("chandu here dns bulk")
      ip_checker = pydnsbl.DNSBLIpChecker()
      result=ip_checker.check(ip)
      dnsbl = result.detected_by
   else:
+     print("chandu here NIL")
      dnsbl = "NIL"
 
-  a = ips(reference = ref, ipaddress = ip, status = dbstatus, remarks = abuse, Sans =sans, Pysbil =dnsbl , VirusTotal =   virustotal, IbmXForce = ibm)
+  a = ips(reference = ref, ipaddress = ip, status = dbstatus, remarks = abuse, Sans =sans, Pysbil =dnsbl , VirusTotal =   "virustotal", IbmXForce = ibm)
   a.save()
 
 def export_users_xls(request, ref):
@@ -293,7 +284,7 @@ def export_users_xls(request, ref):
     font_style = xlwt.XFStyle()
     font_style.font.bold = True
 
-    columns = ['IP Address', 'Status', 'Remarks']
+    columns = ['IP Address', 'Status', 'AbuseIPDB Result', 'Sans Result', 'PYSBIL Result', 'IBM X-Force Result']
 
     for col_num in range(len(columns)):
         ws.write(row_num, col_num, columns[col_num], font_style)
@@ -301,7 +292,7 @@ def export_users_xls(request, ref):
     # Sheet body, remaining rows
     font_style = xlwt.XFStyle()
 
-    rows = ips.objects.filter(reference = ref).values_list('ipaddress','status','remarks')
+    rows = ips.objects.filter(reference = ref).values_list('ipaddress','status','remarks','Sans','Pysbil','IbmXForce')
     print("chandu row")
     print(rows)
     for row in rows:
