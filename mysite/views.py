@@ -170,7 +170,7 @@ def ReadBulk(request):
           ref_list.append(ref)
         print("reflist")
         print(ref_list)
-        p = Pool(2)
+        p = Pool(20)
         p.map(check, ip_list, ref_list)
         result_to_display = ips.objects.filter(reference = ref_list[0])
         context = {'data_ip': result_to_display,
@@ -208,7 +208,7 @@ def ReadXl(request):
                 row_data.append(str(cell.value))
                 ref_data.append(ref)
         print(row_data)
-        p = Pool(2)
+        p = Pool(20)
         print(ref)
         p.map(check, row_data, ref_data)
         print(ref)
