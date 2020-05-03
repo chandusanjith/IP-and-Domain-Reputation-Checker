@@ -6,7 +6,7 @@ def VirusTotalChecker(ip):
     try:
         ip_report = vt.retrieve(ip)   #get the VT IP report for this IP
     except:
-        return("API error: on ip " + ip)
+        return(" VirusTotal API error: on ip " + ip)
     
     total_pos = sum([u["positives"] for u in ip_report.detected_urls])
     total_scan = sum([u["total"] for u in ip_report.detected_urls])

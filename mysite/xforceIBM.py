@@ -1,7 +1,9 @@
 import requests
 from requests.auth import HTTPBasicAuth
-
 import json
+
+
+
 
 def myXForceChecker(url):
 
@@ -15,8 +17,11 @@ def myXForceChecker(url):
     printResult = []
     # e.g. url = "https://exchange.xforce.ibmcloud.com/ip//114.200.4.207"
     # IP Report
-    myResult1 = requests.get(url, auth=HTTPBasicAuth('f276aa3a-f95a-4222-b112-2640399834d7',
-                                                     'd2ecb5be-6648-450f-b632-72126a42bec0'))
+    try:
+       myResult1 = requests.get(url,  auth=HTTPBasicAuth('f276aa3a-f95a-4222-b112-2640399834d7',
+                                                     'd2ecb5be-6648-450f-b632-72126a42bec0'), timeout=12)
+    except:
+        return ("IBM API TIMEOUT ERROR!!!")
     c1 = myResult1.content
     myJson1 = json.loads(c1)
 

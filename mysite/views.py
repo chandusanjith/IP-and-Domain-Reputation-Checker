@@ -9,7 +9,6 @@ from mysite.sans import sansChecker
 from mysite.myIPwhois import IPWhoisChecker
 from mysite.xforceIBM import myXForceChecker
 from mysite.VirusTotal import VirusTotalChecker
-
 import openpyxl
 from django.contrib import messages
 import xlwt
@@ -71,6 +70,7 @@ def checksingleip(request):
     part3 =  abuseipdbChecker("https://www.abuseipdb.com/check/" + ip)
    
      # Call xforceIBM.py
+ 
     part4 = myXForceChecker("https://api.xforce.ibmcloud.com/ipr/" + ip)
      
     part5 = VirusTotalChecker(ip)
