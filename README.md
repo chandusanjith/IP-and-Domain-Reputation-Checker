@@ -1,5 +1,7 @@
 # IP AND DOMAIN REPUTATION CHECKER
-This web application checks if IP and domains are blocked or not in more than one websites
+This web application checks if IP and domains are blocked or not in more than one websites,
+Organisations use different websites like ipvoid, IBM X force, virus total and many more, to check if an ip is blacklisted so they check each and every website for confirmation.
+So this application helps to check IP address in various blacklists (DNSBL, RBL). Such a check is a great indicator for an IP address’ reputation. Basically this application is processing 50 ips in 2 minutes, if more than 50 getting socket connection error.
 
 # Installation:
 1. go to the project folder 
