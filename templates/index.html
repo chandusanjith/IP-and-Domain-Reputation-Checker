@@ -119,9 +119,41 @@
   height: 45.5vh;
   border-radius: 15%;
 }
+.class1 {
+      max-height:0px;
+      transition:max-height 1s;
+      overflow:hidden;
+    }
 </style>
+<script>
+    function show() {
+      document.getElementById('id1').style.display = "block";
+      document.getElementById('id2').style.display = "block";
+    }
+  </script>
     <body >
-        <form action="/ipxl/" method="post" enctype="multipart/form-data">
+      <div class="mt-2">
+      {% if messages %} {% for message in messages %}
+      <div
+        class="alert alert-{{ message.tags }} alert-dismissible fade show"
+        role="alert"
+      >
+      {{ message }}
+
+        <button
+          type="button"
+          class="close"
+          data-dismiss="alert"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    </div>
+
+    {% endfor %} 
+    {% endif %} 
+        <form action="/ipxl/" method="post" enctype="multipart/form-data" onsubmit="show();">
             {% csrf_token %}
             <input type="file"
                    title="Upload excel file"
@@ -129,16 +161,19 @@
                    style="border: 1px solid black; padding: 5px;"
                    required="required">
                    <input type="submit"
-                   id = "badass"
                    value="Upload"
+                   onclick = "show()"
                    style="border: 1px solid green; padding:5px; border-radius: 2px; cursor: pointer;">
           </form>
-          <form action = "/ipbulk/" method = "post" >{% csrf_token %}
+          <form action = "/ipbulk/" method = "post" onsubmit="show();">{% csrf_token %}
          Paste IP's if you dont want to upload xls 
          <br>
-         <textarea type="text" name ="names" rows = "5" cols = "60" name = "description">
-         </textarea></br>
-         <input type = "submit" value = "submit" style="border: 1px solid green; padding:5px; border-radius: 2px; cursor: pointer;" >
+         <textarea type="text" name ="names" rows = "5" cols = "60"></textarea>
+         </br>
+        <input type="submit"
+                   value="Upload"
+                   onclick = "show()"
+                   style="border: 1px solid green; padding:5px; border-radius: 2px; cursor: pointer;">
       </form>
           <p>
                    {% if button == 1 %}
@@ -151,6 +186,8 @@
          </form>
           {% endif %}
             <p>
+              <div id="id1" class="spinner-border" style="display:none" alt=""></div>
+              <div id="id2"  style="display:none" alt="">Processing, wait for a minute or so...</div>
         <p></p>
         <hr>
         <table class="table">

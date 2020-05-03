@@ -94,6 +94,12 @@ a:hover {
 }
 
 </style>
+<script>
+    function show() {
+      document.getElementById('id1').style.display = "block";
+      document.getElementById('id2').style.display = "block";
+    }
+  </script>
 <div class="mt-2">
       {% if messages %} {% for message in messages %}
       <div
@@ -121,8 +127,10 @@ a:hover {
 	<div class="container__item">
 		<form action = "/checksingleip/" method = "POST"> {% csrf_token %}
 			<input type="text" class="form__field" placeholder="IP address goes here" name = "singleip" >
-			<button type="submit" class="btn btn--primary btn--inside uppercase">Check</button>
+			<button type="submit" onclick = "show()" class="btn btn--primary btn--inside uppercase">Check</button>
 		</form>
+    <div id="id1" class="spinner-border" style="display:none" alt=""></div>
+              <div id="id2"  style="display:none" alt="">Processing, wait for a minute or so...</div>
 	</div>
 </div>
 {%if status == '09'%}

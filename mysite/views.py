@@ -158,21 +158,25 @@ def checkIBM(ipaddress):
 def ReadBulk(request):
     ipss = request.POST['names']
     ip_list = ipss.split()
-    ref = create_ref_code()
-    ip_length = len(ip_list)
-    ref_list = list()
-    for i in range(ip_length):
-      ref_list.append(ref)
-    print("reflist")
-    print(ref_list)
-    p = Pool(10)
-    p.map(check, ip_list, ref_list)
-    result_to_display = ips.objects.filter(reference = ref_list[0])
-    context = {'data_ip': result_to_display,
+    if not ip_list:
+      messages.info(request, 'Field is empty!!')
+      return render(request, 'index.html')
+    else:
+        ref = create_ref_code()
+        ip_length = len(ip_list)
+        ref_list = list()
+        for i in range(ip_length):
+          ref_list.append(ref)
+        print("reflist")
+        print(ref_list)
+        p = Pool(10)
+        p.map(check, ip_list, ref_list)
+        result_to_display = ips.objects.filter(reference = ref_list[0])
+        context = {'data_ip': result_to_display,
                 'reference': ref_list[0],
                 'button': 1}
 
-    return render(request, 'index.html', context)
+        return render(request, 'index.html', context)
     
 
 def ReadXl(request):
@@ -181,6 +185,9 @@ def ReadXl(request):
     else:
         excel_file = request.FILES["excel_file"]
 
+        if not excel_file:
+          messages.info(request, 'Please select a file!!')
+          return render(request, 'index.html')
         # you may put validations here to check extension or file size
 
         wb = openpyxl.load_workbook(excel_file)
