@@ -76,20 +76,22 @@ def checksingleip(request):
      # Call xforceIBM.py
  
     part4 = myXForceChecker("https://api.xforce.ibmcloud.com/ipr/" + ip)
-     
-    part5 = VirusTotalChecker(ip)
+    try:
+       part5 = VirusTotalChecker(ip)
+    except:
+       part5 = "Virus Total Down, API Not responding!!!"
 
     part6 = IPWhoisChecker("https://www.abuseipdb.com/whois/" + ip)
 
 
     print("virustotal")
     print(part5)
-    if part5 != "POSSIBLY SAFE":
-        print("blk")
-        res5 = "True"
-    else:
+    if part5 == "POSSIBLY SAFE" or part5 == "Virus Total Down, API Not responding!!!":
         print("noblk")
         res5 = "False"
+    else:
+        print("blk")
+        res5 = "True"
        
 
     if part1 == True or part1 == False:
@@ -113,7 +115,6 @@ def checksingleip(request):
         status = "09"
     else:
           status = "00"
-    isip = "00"
     context = {'part1': resukt1,
              'part2': part2,
              'part3':part3,
@@ -121,7 +122,8 @@ def checksingleip(request):
              'part5':part5,
              'part6':part6,
              'status': status,
-             'isip': isip}
+             'isip': ip,
+             'dns': "00"}
     return render(request, 'checkip.html', context)    
 
         # If the input is a domain or other strings, let the website validate then ...
@@ -141,11 +143,12 @@ def checksingleip(request):
              #'part2': part1,
              #'part3':part3,
              #'part4':part4 }
-      isip = "07"
+      
       context = {'part6': part1,
              'part2':part3,
              'part4': part4,
-             'isip': isip}
+             'isip': ip,
+             'dns': "01"}
       return render(request, 'checkip.html', context)    
 
 

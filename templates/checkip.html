@@ -101,7 +101,7 @@ a:hover {
     }
   </script>
 
-  <marquee behavior="scroll" direction="left">UPDATE!!!!, (1) Now you can check domain and ip address.     (2) New IPWhoisChecker has been added!!</marquee>
+  <marquee behavior="scroll" direction="left">UPDATE!!!!, (1) Now you can check domain and ip address.     (2) New IPWhoisChecker has been added!!. (3) you can request 4 API requests per minute for Virus Total. (4) You can request 5000 API calls for IBM XForce. Happy Coading we love people who code, click on contact us, lets collab :)</marquee>
 
 <div class="mt-2">
       {% if messages %} {% for message in messages %}
@@ -135,6 +135,9 @@ a:hover {
               <div id="id2"  style="display:none" alt="">Processing, wait for a minute or so...</div>
 	</div>
 </div>
+{% if part4 is not null  %}
+<h1> Displaying Result for : {{isip}} </h1>
+{% endif %}
 {%if status == '09'%}
 <span class="s1">BLOCKED</span>
 {% endif %}
@@ -153,24 +156,24 @@ a:hover {
 {% if part4 is not null  %}
 <h1> -------------------------------- </h1>
 {% endif %}
-{% if part4 is not null  %}
+{% if part4 is not null and dns == "00" %}
 <h1> [.] VirusTotal Result:</h1>
 {% endif %}
-{% if part4 is not null %}
+{% if part4 is not null and dns == "00" %}
 <p style = "white-space: pre-wrap">{{part5}}</p>
 {% endif %}
 
 
 
-{% if part4 is not null  %}
+{% if part4 is not null and  dns == "00" %}
 <h1> -------------------------------- </h1>
 {% endif %}
-{% if part4 is not null  %}
+{% if part4 is not null and dns == "00" %}
 <h1> [.] PYSBIL </h1>
 <p style = "white-space: pre-wrap">{{part1}}</p>
 {% endif %}
-{% if part4 is not null  %}
-{% if part4 is not null  %}
+{% if part4 is not null and dns == "00" %}
+{% if part4 is not null and dns == "00" %}
 <h1> -------------------------------- </h1>
 {% endif %}
 <h1> [.] Sans Result: </h1>
@@ -178,10 +181,10 @@ a:hover {
 {% for info1 in part3 %}
 <p style = "white-space: pre-wrap">{{info1}}</p>
 {% endfor %}
-{% if part4 is not null  %}
+{% if part4 is not null and dns == "00" %}
 <h1> -------------------------------- </h1>
 {% endif %}
-{% if part4 is not null %}
+{% if part4 is not null  %}
 <h1> [.] AbuseIPDB Result: </h1>
 {% endif %}
 {% for info1 in part2 %}
