@@ -101,7 +101,7 @@ a:hover {
     }
   </script>
 
-  <marquee behavior="scroll" direction="left">UPDATE!!!!, (1) Now check you can check domain also.     (2) New IPWhoisChecker has been added!!</marquee>
+  <marquee behavior="scroll" direction="left">UPDATE!!!!, (1) Now check you can check domain and ip address.     (2) New IPWhoisChecker has been added!!</marquee>
 
 <div class="mt-2">
       {% if messages %} {% for message in messages %}
@@ -125,11 +125,10 @@ a:hover {
     {% endfor %} 
     {% endif %} 
 
-
+<form action = "/checksingleip/" method = "POST"> {% csrf_token %}
 <div class="container">
 	<div class="container__item">
-		<form action = "/checksingleip/" method = "POST"> {% csrf_token %}
-			<input type="text" class="form__field" placeholder="IP address goes here" name = "singleip" >
+			<input type="text" class="form__field" placeholder="IP and domain goes here" name = "singleip" >
 			<button type="submit" onclick = "show()" class="btn btn--primary btn--inside uppercase">Check</button>
 		</form>
     <div id="id1" class="spinner-border" style="display:none" alt=""></div>

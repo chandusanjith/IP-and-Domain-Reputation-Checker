@@ -30,6 +30,10 @@ def LoadCheckIp(request):
 def About(request):
   return render(request, 'About.html')
 
+def ContactDev(request):
+  return render(request, 'Developer.html')
+
+
 def addcontact(request):
   name = request.POST['namec']
   email = request.POST['email']
