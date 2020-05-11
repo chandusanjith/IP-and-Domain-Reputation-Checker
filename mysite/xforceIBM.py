@@ -24,7 +24,7 @@ def myXForceChecker(url):
         return ("IBM API TIMEOUT ERROR!!!")
     c1 = myResult1.content
     myJson1 = json.loads(c1)
-
+    
     # >>>>>>>>>>>  IP/Domain Report Check <<<<<<<<<<<<<
     # ...........
     '''
