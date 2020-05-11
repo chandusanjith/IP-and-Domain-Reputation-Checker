@@ -100,6 +100,9 @@ a:hover {
       document.getElementById('id2').style.display = "block";
     }
   </script>
+
+  <marquee behavior="scroll" direction="left">UPDATE!!!!, (1) Now check you can check domain also.     (2) New IPWhoisChecker has been added!!</marquee>
+
 <div class="mt-2">
       {% if messages %} {% for message in messages %}
       <div
@@ -139,33 +142,36 @@ a:hover {
 {% if status == '00' %}
 <span class="s2">Possible Good Ip</span>
 {% endif %}
-{% if part4 is not null %}
+{% if part4 is not null  %}
 <h1> -------------------------------- </h1>
 {% endif %}
-{% if part4 is not null %}
+{% if part4 is not null  %}
 <h1> [.] IBM X-Force Result:</h1>
 {% endif %}
 {% for info1 in part4 %}
 <p>{{info1}}</p>
 {% endfor %}
-{% if part4 is not null %}
+{% if part4 is not null  %}
 <h1> -------------------------------- </h1>
 {% endif %}
-{% if part4 is not null %}
+{% if part4 is not null  %}
 <h1> [.] VirusTotal Result:</h1>
 {% endif %}
 {% if part4 is not null %}
 <p style = "white-space: pre-wrap">{{part5}}</p>
 {% endif %}
-{% if part4 is not null %}
+
+
+
+{% if part4 is not null  %}
 <h1> -------------------------------- </h1>
 {% endif %}
-{% if part4 is not null %}
+{% if part4 is not null  %}
 <h1> [.] PYSBIL </h1>
 <p style = "white-space: pre-wrap">{{part1}}</p>
 {% endif %}
-{% if part4 is not null %}
-{% if part4 is not null %}
+{% if part4 is not null  %}
+{% if part4 is not null  %}
 <h1> -------------------------------- </h1>
 {% endif %}
 <h1> [.] Sans Result: </h1>
@@ -173,7 +179,7 @@ a:hover {
 {% for info1 in part3 %}
 <p style = "white-space: pre-wrap">{{info1}}</p>
 {% endfor %}
-{% if part4 is not null %}
+{% if part4 is not null  %}
 <h1> -------------------------------- </h1>
 {% endif %}
 {% if part4 is not null %}
@@ -182,4 +188,13 @@ a:hover {
 {% for info1 in part2 %}
 <p>{{info1}}</p>
 {% endfor %}
+{% if part4 is not null  %}
+<h1> -------------------------------- </h1>
+{% endif %}
+{% if part4 is not null  %}
+<h1> [.] IPWhoisChecker Result:</h1>
+{% endif %}
+{% if part4 is not null  %}
+<p style = "white-space: pre-wrap">{{part6}}</p>
+{% endif %}
 {% endblock %}

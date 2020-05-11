@@ -75,6 +75,8 @@ def checksingleip(request):
      
     part5 = VirusTotalChecker(ip)
 
+    part6 = IPWhoisChecker("https://www.abuseipdb.com/whois/" + ip)
+
 
     print("virustotal")
     print(part5)
@@ -107,34 +109,43 @@ def checksingleip(request):
         status = "09"
     else:
           status = "00"
-
+    isip = "00"
     context = {'part1': resukt1,
              'part2': part2,
              'part3':part3,
              'part4': part4,
              'part5':part5,
-             'status': status}
+             'part6':part6,
+             'status': status,
+             'isip': isip}
     return render(request, 'checkip.html', context)    
 
         # If the input is a domain or other strings, let the website validate then ...
   else:
             #Call myIPwhois.py
-          #part1 =  IPWhoisChecker("https://www.abuseipdb.com/whois/" + ip)
+      part1 =  IPWhoisChecker("https://www.abuseipdb.com/whois/" + ip)
 
             # Call sans.py
             # sans.sansChecker("https://isc.sans.edu/api/ip/" + ip)
-          #part2 = sansChecker(ip)
+            #part2 = sansChecker(ip)
 
             # Call abuseipdb.py
-          #part3 = abuseipdbChecker("https://www.abuseipdb.com/check/" + ip)
+      part3 = abuseipdbChecker("https://www.abuseipdb.com/check/" + ip)
 
-          #part4 = myXForceChecker("https://api.xforce.ibmcloud.com/ipr/" + ip)
+      part4 = myXForceChecker("https://api.xforce.ibmcloud.com/url/" + ip)
           #context = {
              #'part2': part1,
              #'part3':part3,
              #'part4':part4 }
-          messages.info(request, 'Entered IP is not valid!!')
-          return render(request, 'checkip.html')
+      isip = "07"
+      context = {'part6': part1,
+             'part2':part3,
+             'part4': part4,
+             'isip': isip}
+      return render(request, 'checkip.html', context)    
+
+
+          
 def create_ref_code():
     return ''.join(random.choices(string.ascii_lowercase + string.digits, k=20))
 
