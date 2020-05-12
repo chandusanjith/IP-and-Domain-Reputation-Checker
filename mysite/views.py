@@ -76,6 +76,7 @@ def checksingleip(request):
      # Call xforceIBM.py
  
     part4 = myXForceChecker("https://api.xforce.ibmcloud.com/ipr/" + ip)
+    
     try:
        part5 = VirusTotalChecker(ip)
     except:
