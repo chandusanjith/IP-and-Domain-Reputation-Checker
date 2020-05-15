@@ -80,7 +80,10 @@ def checksingleip(request):
     part2 =  sansChecker(ip)
 
             # Call abuseipdb.py
-    part3 =  abuseipdbChecker("https://www.abuseipdb.com/check/" + ip)
+    try:
+       part3 =  abuseipdbChecker("https://www.abuseipdb.com/check/" + ip)
+    except:
+       part3 = "Local IP Possibly safe"
    
      # Call xforceIBM.py
  
@@ -108,11 +111,16 @@ def checksingleip(request):
        ip_checker = pydnsbl.DNSBLIpChecker()
        result=ip_checker.check(ip)
        resukt1 = result.detected_by
-     
-    if not part3:
-        req4 = "False"
+    
+    if part3 != "Local IP Possibly safe":
+       if not part3:
+          req4 = "False"
+       else:
+          req4 = "True"
     else:
-        req4 = "True"
+        part3 = " "
+       
+    
     if  "Malware" in part4[2]:
         req3 = "True"
     else:
