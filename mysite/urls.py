@@ -19,7 +19,7 @@ from mysite.views import LoadPage, LoadCheckIp, checksingleip, ReadXl,    export
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', LoadCheckIp),
+    path('', LoadPage),
     #path('main/', LoadPage),
     path('loadcip/',LoadCheckIp),
     path('checksingleip/', checksingleip),

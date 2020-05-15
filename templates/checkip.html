@@ -101,8 +101,6 @@ a:hover {
     }
   </script>
 
-  <marquee behavior="scroll" direction="left">UPDATE!!!!, (1) Now you can check domain and ip address.     (2) New IPWhoisChecker has been added!!. (3) you can request 4 API requests per minute for Virus Total. (4) You can request 5000 API calls for IBM XForce. Happy Coading we love people who code, click on contact us, lets collab :)</marquee>
-
 <div class="mt-2">
       {% if messages %} {% for message in messages %}
       <div
@@ -139,7 +137,7 @@ a:hover {
 <h1> Displaying Result for : {{isip}} </h1>
 {% endif %}
 {%if status == '09'%}
-<span class="s1">BLOCKED</span>
+<span class="s1">BLACKLISTED</span>
 {% endif %}
 {% if status == '00' %}
 <span class="s2">Possible Good Ip</span>

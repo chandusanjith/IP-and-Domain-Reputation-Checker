@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 from django.http import HttpResponse, HttpResponseNotFound
 import sys,re, smtplib
-from mysite.models import ips, contacted
+from mysite.models import ips, contacted, CountryData, IPData
 from mysite.abuseipdb import abuseipdbChecker
 from mysite.sans import sansChecker
 from mysite.myIPwhois import IPWhoisChecker
@@ -22,7 +22,14 @@ from pathos.multiprocessing import ProcessingPool as Pool
 from threading import Thread
 
 def LoadPage(request):
-  return render(request, 'Main.html')
+  b = IPData.objects.all()
+  a = CountryData.objects.all()
+  print(a)
+  context = {
+    'cdata': a,
+    'ipdata': b
+  }
+  return render(request, 'Main.html', context)
 
 def LoadCheckIp(request):
   return render(request, 'checkip.html')
@@ -62,6 +69,8 @@ def checksingleip(request):
 
         # If the IP format is valid:
   if re_ip.match(ip):
+     
+    
             # Call myIPwhois.py
     #part1 = IPWhoisChecker("https://www.abuseipdb.com/whois/" + ip)
     #part1 = part1[345:]
@@ -116,6 +125,28 @@ def checksingleip(request):
         status = "09"
     else:
           status = "00"
+    print(part4[0][9:])
+    if  CountryData.objects.filter(country = part4[0][9:]).exists():
+        print("coming here")
+        c = CountryData.objects.filter(country = part4[0][9:])
+        count = c[0].blklistcount
+        count = count + 1
+        country = CountryData.objects.filter(country = part4[0][9:]).update(blklistcount = count)
+    else:
+        print("coming else part")
+        c = CountryData(country = part4[0][9:],blklistcount = 1 )
+        c.save()
+
+    d = IPData.objects.filter(pk = 1)
+    ipcount = d[0].ipcount + 1
+    if status == "09":
+        blacklistedip = d[0].blacklistedip + 1
+        goodip = d[0].goodip
+    else:
+        blacklistedip = d[0].blacklistedip
+        goodip = d[0].goodip + 1
+    dat = IPData.objects.filter(pk = 1).update(ipcount = ipcount,blacklistedip = blacklistedip, goodip = goodip )
+
     context = {'part1': resukt1,
              'part2': part2,
              'part3':part3,
@@ -144,7 +175,9 @@ def checksingleip(request):
              #'part2': part1,
              #'part3':part3,
              #'part4':part4 }
-      
+      d = IPData.objects.filter(pk = 1)
+      count = d[0].domaincount + 1
+      dat = IPData.objects.filter(pk = 1).update(domaincount = count)
       context = {'part6': part1,
              'part2':part3,
              'part4': part4,
@@ -268,7 +301,8 @@ def check(ip, ref):
       print('at no block')
       dbstatus = "POSSIBLY SAFE"
   
- 
+  print("chandu here to check country")
+  print(status3[0][9:])
 
   if req4 == "True":
      abuse = status4[0]
@@ -293,6 +327,25 @@ def check(ip, ref):
   else:
      print("chandu here NIL")
      dnsbl = "NIL"
+
+  if  CountryData.objects.filter(country = status3[0][9:]).exists():
+
+        c = CountryData.objects.filter(country = status3[0][9:])
+        count = c[0].blklistcount
+        count = count + 1
+        country = CountryData.objects.filter(country = status3[0][9:]).update(blklistcount = count)
+  else:
+        c = CountryData(country = status3[0][9:],blklistcount = 1 )
+        c.save()
+  d = IPData.objects.filter(pk = 1)
+  ipcount = d[0].ipcount + 1
+  if dbstatus == "BLACKLISTED":
+        blacklistedip = d[0].blacklistedip + 1
+        goodip = d[0].goodip
+  else:
+        blacklistedip = d[0].blacklistedip
+        goodip = d[0].goodip + 1
+  dat = IPData.objects.filter(pk = 1).update(ipcount = ipcount,blacklistedip = blacklistedip, goodip = goodip )
 
   a = ips(reference = ref, ipaddress = ip, status = dbstatus, remarks = abuse, Sans =sans, Pysbil =dnsbl , VirusTotal =   "virustotal", IbmXForce = ibm)
   a.save()

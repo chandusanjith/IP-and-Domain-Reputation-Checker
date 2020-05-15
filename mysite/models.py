@@ -1,4 +1,6 @@
 from django.db import models
+from django.conf import settings
+
 
 class ips(models.Model):
   reference = models.TextField(default = 1)
@@ -9,6 +11,9 @@ class ips(models.Model):
   Pysbil = models.TextField(default="")
   VirusTotal = models.TextField(default="")
   IbmXForce = models.TextField(default="")
+   
+  def __str__(self):
+       return "{}-{}".format(self.ipaddress, self.reference)
 
 class contacted(models.Model):
 	name = models.TextField()
@@ -16,3 +21,22 @@ class contacted(models.Model):
 	message = models.TextField()
 	mobile = models.TextField()
 	dateofcontact = models.TextField()
+
+  
+  
+
+class IPData(models.Model):
+  ipcount = models.IntegerField()
+  blacklistedip = models.IntegerField()
+  goodip = models.IntegerField()
+  domaincount = models.IntegerField()
+
+  def __str__(self):
+       return "{}-{}".format(self.ipcount, self.blacklistedip)
+
+class CountryData(models.Model):
+  country = models.TextField()
+  blklistcount = models.IntegerField()
+
+  def __str__(self):
+       return "{}-{}".format(self.country, self.blklistcount)
