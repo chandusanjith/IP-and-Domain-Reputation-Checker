@@ -88,6 +88,6 @@ def sansChecker(IPOrDomain):
     elif mySoup.text == 'bad IP address':
         print('We expected a valid IP address.')
         exit()
-
+    print("coming out from sans")
     return printResult
   

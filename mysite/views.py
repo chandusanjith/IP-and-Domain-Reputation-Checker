@@ -112,7 +112,7 @@ def checksingleip(request):
        result=ip_checker.check(ip)
        resukt1 = result.detected_by
     
-    if part3 != "Local IP Possibly safe":
+    if part3 != "Local IP Possibly safe" or "er":
        if not part3:
           req4 = "False"
        else:

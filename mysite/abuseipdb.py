@@ -9,7 +9,10 @@ def abuseipdbChecker(url):
     # e.g. url = "https://www.abuseipdb.com/check/220.191.211.7"
     #      url = "https://www.abuseipdb.com/check/baidu.com"
     # HTTP Query
-    myResult = requests.get(url)
+    try:
+       myResult = requests.get(url, timeout=5)
+    except:
+       return "er"
     printResult = []
     print('[.] AbuseIPDB Result:')
 
