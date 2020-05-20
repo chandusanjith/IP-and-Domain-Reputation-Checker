@@ -3,7 +3,6 @@ import re
 from bs4 import BeautifulSoup
 import requests, dns.resolver
 
-
 def sansChecker(IPOrDomain):
 
     # HTTP Query

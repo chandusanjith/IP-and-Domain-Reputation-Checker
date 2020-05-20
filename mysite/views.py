@@ -79,6 +79,7 @@ def checksingleip(request):
             # Call sans.py
     part2 =  sansChecker(ip)
 
+
             # Call abuseipdb.py
     try:
        part3 =  abuseipdbChecker("https://www.abuseipdb.com/check/" + ip)
@@ -88,14 +89,12 @@ def checksingleip(request):
      # Call xforceIBM.py
  
     part4 = myXForceChecker("https://api.xforce.ibmcloud.com/ipr/" + ip)
-    
     try:
        part5 = VirusTotalChecker(ip)
     except:
        part5 = "Virus Total Down, API Not responding!!!"
 
     part6 = IPWhoisChecker("https://www.abuseipdb.com/whois/" + ip)
-
 
     print("virustotal")
     print(part5)

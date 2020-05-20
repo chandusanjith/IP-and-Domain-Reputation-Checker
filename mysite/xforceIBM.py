@@ -2,9 +2,6 @@ import requests
 from requests.auth import HTTPBasicAuth
 import json
 
-
-
-
 def myXForceChecker(url):
 
     # User: 473284ee-2c45-4719-a201-5e6c81c0253a

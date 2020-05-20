@@ -58,3 +58,4 @@ whitenoise==5.0.1
 xlwt==1.3.0
 lxml
 git+https://github.com/chandusanjith/virustotal2/
+psycopg2-binary
