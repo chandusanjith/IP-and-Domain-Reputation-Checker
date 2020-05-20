@@ -21,6 +21,7 @@ from datetime import date
 from pathos.multiprocessing import ProcessingPool as Pool
 from threading import Thread
 from django import db
+import django
 
 
 def LoadPage(request):
