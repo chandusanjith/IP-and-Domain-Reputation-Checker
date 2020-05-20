@@ -20,6 +20,8 @@ import string
 from datetime import date
 from pathos.multiprocessing import ProcessingPool as Pool
 from threading import Thread
+from django import db
+
 
 def LoadPage(request):
   b = IPData.objects.all()
@@ -356,6 +358,9 @@ def check(ip, ref):
 
   a = ips(reference = ref, ipaddress = ip, status = dbstatus, remarks = abuse, Sans =sans, Pysbil =dnsbl , VirusTotal =   "virustotal", IbmXForce = ibm)
   a.save()
+  django.db.connection.close()
+
+
 
 def export_users_xls(request, ref):
     filename = "ParameterLabs" + str(datetime.datetime.now()) + ".xls"
