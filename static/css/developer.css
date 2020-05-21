@@ -4,6 +4,7 @@ html {
 
 body {
   overflow: hidden;
+  background: #bcdee7 no-repeat center center fixed;
   background-size: cover;
   position: fixed;
   padding: 0px;

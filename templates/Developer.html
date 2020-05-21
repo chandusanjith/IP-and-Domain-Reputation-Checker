@@ -1,9 +1,11 @@
 {% extends  'Main.html' %}
-{% block content %}
 {% load static %}
+{% block content %}
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
       <link rel="stylesheet" type="text/css" href="{% static 'css/developer.css' %}">
+
+
 <aside class="profile-card">
   <header>
     <!-- here’s the avatar -->
@@ -32,7 +34,7 @@
   </div>
 
   <!-- some social links to show off -->
-  <ul class="profile-social-links">
+  <ul hidden class="profile-social-links">
     <li>
       <a target="_blank" href="https://www.facebook.com/chandusanjith">
         <i class="fa fa-facebook"></i>
@@ -56,6 +58,6 @@
     </li>
   </ul>
 </aside>
-</body<
+</body>
 </html>
 {% endblock content %}
