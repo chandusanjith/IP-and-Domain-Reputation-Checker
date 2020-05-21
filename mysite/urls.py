@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from mysite.views import LoadPage, LoadCheckIp, checksingleip, ReadXl,    export_users_xls, About, Contact, addcontact, ReadBulk, ContactDev
+from mysite.views import LoadPage, LoadCheckIp, checksingleip, ReadXl,    export_users_xls, About, Contact, addcontact, ReadBulk, ContactDev, DownloadResume
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -29,5 +29,6 @@ urlpatterns = [
     path('Contact/', Contact),
     path('Contactdev/', ContactDev),
     path('contacted/', addcontact),
-    path('ipbulk/', ReadBulk)
+    path('ipbulk/', ReadBulk),
+    path('resume/',DownloadResume)
 ]

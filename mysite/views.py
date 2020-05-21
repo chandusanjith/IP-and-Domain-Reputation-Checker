@@ -22,6 +22,13 @@ from pathos.multiprocessing import ProcessingPool as Pool
 from threading import Thread
 from django import db
 import django
+from django.views.static import serve
+import os
+
+def DownloadResume(request):
+  filepath = 'templates/RESUME.pdf' 
+  return serve(request, os.path.basename(filepath),os.path.dirname(filepath))
+
 
 
 def LoadPage(request):
