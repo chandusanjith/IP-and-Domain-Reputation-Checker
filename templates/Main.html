@@ -30,8 +30,8 @@
 
       <!-- Sidebar - Brand -->
       <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/main/">
-        <div class="sidebar-brand-icon rotate-n-15">
-          <i class="fas fa-fw fa-code"></i>
+        <div class="sidebar-brand-icon">
+          <i class="fas fa-fw fa-cogs"></i>
         </div>
         <div class="sidebar-brand-text mx-3">Web Scraping Tool</div>
       </a>
@@ -51,7 +51,7 @@
 
       <!-- Heading -->
       <div class="sidebar-heading">
-        IP and Domain Check
+        IP & Domain Check
       </div>
 
       <!-- Nav Item - Pages Collapse Menu -->
@@ -140,7 +140,8 @@
 {% block content %}
         <!-- Topbar -->
         <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-<marquee behavior="scroll" direction="left">UPDATE!!!!, (1) Now you can check domain and ip address.     (2) New IPWhoisChecker has been added!!. (3) Fix done for Local IP's.  Happy Coading, we love people who code, click on contact us, lets collab :)</marquee>
+<marquee behavior="scroll" direction="left">UPDATE!!!!, (1) File hash checking has been added!! (2) Fix done for Local IP's.
+(3)Version 44, stable Release.  Happy Coading, we love people who code, click on contact us, lets collab :)</marquee>
           <!-- Sidebar Toggle (Topbar) -->
           <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
             <i class="fa fa-bars"></i>
@@ -326,6 +327,21 @@
 
             <!-- Earnings (Monthly) Card Example -->
             <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card border-left-secondary shadow h-100 py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-secondary text-uppercase mb-1">Total File hash checked (COUNT)</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">{{ipdata.0.hashcount}}</div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-number-sign fa-2x text-gray-300"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+<div class="col-xl-3 col-md-6 mb-4">
               <div class="card border-left-primary shadow h-100 py-2">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
@@ -340,14 +356,13 @@
                 </div>
               </div>
             </div>
-
             <!-- Earnings (Monthly) Card Example -->
             <div class="col-xl-3 col-md-6 mb-4">
-              <div class="card border-left-success shadow h-100 py-2">
+              <div class="card border-left-warning shadow h-100 py-2">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Blacklisted IP (COUNT)</div>
+                      <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Blacklisted IP (COUNT)</div>
                       <div class="h5 mb-0 font-weight-bold text-gray-800">{{ipdata.0.blacklistedip}}</div>
                     </div>
                     <div class="col-auto">

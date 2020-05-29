@@ -115,6 +115,9 @@ def checksingleip(request):
         return render(request, 'Login.html')
   else:
       ip = request.POST['singleip']
+      if ip == '':
+          messages.info(request, 'Field is empty!!')
+          return render(request, 'checkip.html')
       mySansPrint2 = ''
       myAbuseIPDBPrint3 = ''
       myXForcePrint4 = ''
@@ -291,7 +294,7 @@ def ReadBulk(request):
               ref_list.append(ref)
             print("reflist")
             print(ref_list)
-            p = Pool(20)
+            p = Pool(10)
             p.map(check, ip_list, ref_list)
             result_to_display = ips.objects.filter(reference = ref_list[0])
             context = {'data_ip': result_to_display,
@@ -332,7 +335,7 @@ def ReadXl(request):
                     row_data.append(str(cell.value))
                     ref_data.append(ref)
             print(row_data)
-            p = Pool(20)
+            p = Pool(10)
             print(ref)
             p.map(check, row_data, ref_data)
             print(ref)
@@ -345,6 +348,7 @@ def ReadXl(request):
             return render(request, 'index.html', context)
 
 def check(ip, ref):
+  db.connections.close_all()
   print("function")
   print(ip)
   print(ref)
@@ -421,7 +425,7 @@ def check(ip, ref):
 
   a = ips(reference = ref, ipaddress = ip, status = dbstatus, remarks = abuse, Sans =sans, Pysbil =dnsbl , VirusTotal =   "virustotal", IbmXForce = ibm)
   a.save()
-  django.db.connection.close()
+  
 
 
 
@@ -467,7 +471,13 @@ def FileHashSingle(request):
           return render(request, 'checkfilehash.html')
       else:
          hashed = request.POST['singlehash']
+         if hashed == '':
+           messages.info(request, 'Field is empty!!')
+           return render(request, 'checkfilehash.html')
          part1 = myXForceHashChecker("https://api.xforce.ibmcloud.com/malware/" + hashed)
+         d = IPData.objects.filter(pk = 1)
+         hashcount = d[0].hashcount + 1
+         IPData.objects.filter(pk = 1).update(hashcount  = hashcount)
          context = {
            'family': part1[0][0][0],
            'type': part1[1],
@@ -548,16 +558,18 @@ def BulkHash(request):
             return render(request, 'bulkfilehash.html', context)
 
 def checkhash(hashed, ref):
+    db.connections.close_all()
     part1 = myXForceHashChecker("https://api.xforce.ibmcloud.com/malware/" + hashed)
     a = Hashes(reference = ref, hashes = hashed, family =part1[0][0][0], type = part1[1], risk = part1[2] )
     a.save()
-    django.db.connection.close()
+    d = IPData.objects.filter(pk = 1)
+    hashcount = d[0].hashcount + 1
+    IPData.objects.filter(pk = 1).update(hashcount  = hashcount)
 
 def downxlshash(request, ref):
-    filename = "ParameterLabs" + str(datetime.datetime.now()) + ".xls"
     response = HttpResponse(content_type='application/ms-excel')
     response['Content-Disposition'] = 'attachment; filename="ParameterLabs.xls"'
-
+    print("comimg1")
     wb = xlwt.Workbook(encoding='utf-8')
     ws = wb.add_sheet('parameter')
 
@@ -566,16 +578,16 @@ def downxlshash(request, ref):
 
     font_style = xlwt.XFStyle()
     font_style.font.bold = True
-
+    print("comimg2")
     columns = ['File Hash', 'Risk', 'Type', 'Family']
-
+    print("comimg3")
     for col_num in range(len(columns)):
         ws.write(row_num, col_num, columns[col_num], font_style)
-
+    print("comimg4")
     # Sheet body, remaining rows
     font_style = xlwt.XFStyle()
-
-    rows = Hashes.objects.filter(reference = ref)
+    print("comimg5")
+    rows = Hashes.objects.filter(reference = ref).values_list('hashes','risk','type','family')
     print("chandu row")
     print(rows)
     for row in rows:

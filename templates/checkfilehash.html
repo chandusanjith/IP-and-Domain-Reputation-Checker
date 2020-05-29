@@ -133,10 +133,12 @@ a:hover {
               <div id="id2"  style="display:none" alt="">Processing, wait for a minute or so...</div>
 	</div>
 </div>
+{% if hashed is not none %}
 <h1> Displaying Result for : {{hashed}} </h1>
 <span class="s2">Family: {{family}}</span>
 <br></br>
 <span class="s2">Type: {{type}}</span>
 <br></br>
 <span class="s2">Risk: {{risk}}</span>
+{% endif %}
 {% endblock %}

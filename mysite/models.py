@@ -30,6 +30,7 @@ class IPData(models.Model):
   blacklistedip = models.IntegerField()
   goodip = models.IntegerField()
   domaincount = models.IntegerField()
+  hashcount = models.IntegerField(default=1)
 
   def __str__(self):
        return "{}-{}".format(self.ipcount, self.blacklistedip)

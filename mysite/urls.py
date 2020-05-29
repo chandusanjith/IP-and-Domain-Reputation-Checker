@@ -35,6 +35,6 @@ urlpatterns = [
     path('resume/',DownloadResume),
     path('loadfilehash/', FileHashSingle),
     path('hashxl/', BulkHash),
-    path('downxlshash/<ref>',downxlshash),
+    path('downxlshash/<ref>/',downxlshash),
     path('hashbulk/', HashBulkRead)
 ]
