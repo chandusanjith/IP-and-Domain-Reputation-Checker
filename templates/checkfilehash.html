@@ -15,7 +15,7 @@ span.s2 {
   font-size: 3rem;
   font-weight: 800;
   text-transform: uppercase;
-  color: #008000	;
+  color: black	;
 }
   :root {
   background: #f5f6fa;
@@ -83,7 +83,7 @@ a:hover {
 }
 
 .form__field {
-  width: 360px;
+  width: 500px;
   background: #fff;
   color: #a3a3a3;
   font: inherit;
@@ -122,79 +122,21 @@ a:hover {
 
     {% endfor %} 
     {% endif %} 
-<center> Single IP or Domain checking screen </center>
-<form action = "/checksingleip/" method = "POST"> {% csrf_token %}
+<center> Single file hash checking screen </center>
+<form action = "/loadfilehash/" method = "POST"> {% csrf_token %}
 <div class="container">
 	<div class="container__item">
-			<input type="text" class="form__field" placeholder="IP and domain goes here" name = "singleip" >
+			<input type="text" class="form__field" placeholder="File Hash goes here" name = "singlehash" >
 			<button type="submit" onclick = "show()" class="btn btn--primary btn--inside uppercase">Check</button>
 		</form>
     <div id="id1" class="spinner-border" style="display:none" alt=""></div>
               <div id="id2"  style="display:none" alt="">Processing, wait for a minute or so...</div>
 	</div>
 </div>
-{% if part4 is not null  %}
-<h1> Displaying Result for : {{isip}} </h1>
-{% endif %}
-{%if status == '09'%}
-<span class="s1">BLACKLISTED</span>
-{% endif %}
-{% if status == '00' %}
-<span class="s2">Possible Good Ip</span>
-{% endif %}
-{% if part4 is not null  %}
-<h1> -------------------------------- </h1>
-{% endif %}
-{% if part4 is not null  %}
-<h1> [.] IBM X-Force Result:</h1>
-{% endif %}
-{% for info1 in part4 %}
-<p>{{info1}}</p>
-{% endfor %}
-{% if part4 is not null  %}
-<h1> -------------------------------- </h1>
-{% endif %}
-{% if part4 is not null and dns == "00" %}
-<h1> [.] VirusTotal Result:</h1>
-{% endif %}
-{% if part4 is not null and dns == "00" %}
-<p style = "white-space: pre-wrap">{{part5}}</p>
-{% endif %}
-
-
-
-{% if part4 is not null and  dns == "00" %}
-<h1> -------------------------------- </h1>
-{% endif %}
-{% if part4 is not null and dns == "00" %}
-<h1> [.] PYSBIL </h1>
-<p style = "white-space: pre-wrap">{{part1}}</p>
-{% endif %}
-{% if part4 is not null and dns == "00" %}
-{% if part4 is not null and dns == "00" %}
-<h1> -------------------------------- </h1>
-{% endif %}
-<h1> [.] AbuseIPDB Result: </h1>
-{% endif %}
-{% for info1 in part3 %}
-<p style = "white-space: pre-wrap">{{info1}}</p>
-{% endfor %}
-{% if part4 is not null and dns == "00" %}
-<h1> -------------------------------- </h1>
-{% endif %}
-{% if part4 is not null  %}
-<h1> [.] Sans Result: </h1>
-{% endif %}
-{% for info1 in part2 %}
-<p>{{info1}}</p>
-{% endfor %}
-{% if part4 is not null  %}
-<h1> -------------------------------- </h1>
-{% endif %}
-{% if part4 is not null  %}
-<h1> [.] IPWhoisChecker Result:</h1>
-{% endif %}
-{% if part4 is not null  %}
-<p style = "white-space: pre-wrap">{{part6}}</p>
-{% endif %}
+<h1> Displaying Result for : {{hashed}} </h1>
+<span class="s2">Family: {{family}}</span>
+<br></br>
+<span class="s2">Type: {{type}}</span>
+<br></br>
+<span class="s2">Risk: {{risk}}</span>
 {% endblock %}

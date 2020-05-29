@@ -40,3 +40,10 @@ class CountryData(models.Model):
 
   def __str__(self):
        return "{}-{}".format(self.country, self.blklistcount)
+
+class Hashes(models.Model):
+  reference = models.TextField()
+  hashes = models.TextField()
+  family = models.TextField()
+  type = models.TextField()
+  risk = models.TextField()

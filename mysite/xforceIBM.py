@@ -78,3 +78,37 @@ def myXForceChecker(url):
                 printResult.append(cat)
 
     return printResult
+
+def myXForceHashChecker(url):
+
+    # User: 473284ee-2c45-4719-a201-5e6c81c0253a
+    # Password: 8acd0774-7238-4ad7-bc09-a2003ca6e80f
+
+    # Auth first
+    print('')
+    print('[.] IBM X-Force Result:')
+    family, type, risk = [], '', ''
+    printResult = []
+    # e.g. url = "https://exchange.xforce.ibmcloud.com/ip//114.200.4.207"
+    # IP Report
+    response  = requests.get(url,  auth=HTTPBasicAuth('f276aa3a-f95a-4222-b112-2640399834d7',
+                                                     'd2ecb5be-6648-450f-b632-72126a42bec0'), timeout=12)
+    if response.status_code == 200:
+       json_response = response.json()
+       try:
+            family.append(json_response['malware']['origins']['external']['family'])
+       except:
+            family.append('No Info')
+       try:
+            type = json_response['malware']['type']
+       except:
+            type = 'No Info'
+       try:
+            risk = json_response['malware']['risk']
+       except:
+            risk = 'No Info'
+    else:
+         print('ERROR IN IBM X FORCE : ' + self.error_status(response.status_code))
+         family, type = risk = ['No Info'], 'No Info'
+
+    return family, type, risk

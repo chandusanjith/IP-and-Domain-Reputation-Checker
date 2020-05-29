@@ -153,8 +153,8 @@
 
     {% endfor %} 
     {% endif %} 
-    <center> Bulk IP checking screen </center>
-        <form action="/ipxl/" method="post" enctype="multipart/form-data" onsubmit="show();">
+    <center> Bulk file hash checking screen </center>
+        <form action="/hashxl/" method="post" enctype="multipart/form-data" onsubmit="show();">
             {% csrf_token %}
             <input type="file"
                    title="Upload excel file"
@@ -166,8 +166,8 @@
                    onclick = "show()"
                    style="border: 1px solid green; padding:5px; border-radius: 2px; cursor: pointer;">
           </form>
-          <form action = "/ipbulk/" method = "post" onsubmit="show();">{% csrf_token %}
-         Paste IP's if you dont want to upload xls 
+          <form action = "/hashbulk/" method = "post" onsubmit="show();">{% csrf_token %}
+         Paste file hashes if you dont want to upload xls 
          <br>
          <textarea type="text" name ="names" rows = "5" cols = "60"></textarea>
          </br>
@@ -178,7 +178,7 @@
       </form>
           <p>
                    {% if button == 1 %}
-                  <form action="/downxls/{{reference}}/" method = "POST" enctype="multipart/form-data">
+                  <form action="/downxlshash/{{reference}}/" method = "POST" enctype="multipart/form-data">
             {% csrf_token %}      
         <input type="submit"
                     id = "as200"
@@ -194,23 +194,19 @@
         <table class="table">
   <thead>
     <tr>
-      <th scope="col">Ip Address</th>
-      <th scope="col">Status</th>
-      <th scope="col">AbuseIPDB Result</th>
-      <th scope="col">Sans Result</th>
-      <th scope="col">PYSBIL Result</th>
-      <th scope="col">IBM X-Force Result</th>
+      <th scope="col">File hash</th>
+      <th scope="col">Risk</th>
+      <th scope="col">Type</th>
+      <th scope="col">Family</th>
     </tr>
   </thead>
   {% for item in data_ip %} 
   <tbody>
     <tr>
-      <td>{{item.ipaddress}}</td>
-      <td>{{item.status}}</td>
-      <td style = "white-space: pre-wrap">{{item.remarks}}</td>
-      <td style = "white-space: pre-wrap">{{item.Sans}}</td>
-      <td style = "white-space: pre-wrap">{{item.Pysbil}}</td>
-      <td style = "white-space: pre-wrap">{{item.IbmXForce}}</td>
+      <td>{{item.hashes}}</td>
+      <td style = "white-space: pre-wrap">{{item.risk}}</td>
+      <td style = "white-space: pre-wrap">{{item.type }}</td>
+      <td style = "white-space: pre-wrap">{{item.family}}</td>
     </tr>
   </tbody>
   {% endfor %}
