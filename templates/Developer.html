@@ -4,7 +4,16 @@
 <style>
  @import url("https://fonts.googleapis.com/css?family=Montserrat:400,400i,700");
 
-
+.footer {
+   position: fixed;
+   bottom: 0;
+   width: 100%;
+   padding: 1rem 0;
+   background-color: white;
+   color: grey;
+   font-size: small;
+   text-align: center;
+}
 .card .banner {
   background-image: url("https://images.unsplash.com/photo-1545703549-7bdb1d01b734?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&ixid=eyJhcHBfaWQiOjE0NTg5fQ");
   background-position: center;
@@ -174,5 +183,12 @@
     </div>
     </form>
   </div>
+</div>
+<div class="footer">
+  <div class="container my-auto">
+          <div class="copyright text-center my-auto">
+            <span>Copyright &copy; ParameterLabs 2020</span>
+          </div>
+        </div>
 </div>
 {% endblock content %}

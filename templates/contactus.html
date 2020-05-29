@@ -10,7 +10,16 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-
+.footer {
+   position: fixed;
+   bottom: 0;
+   width: 100%;
+   padding: 0.5rem 0;
+   background-color: white;
+   color: grey;
+   font-size: small;
+   text-align: center;
+}
 
 .background {
   display: flex;
@@ -279,4 +288,11 @@
   </div>
 </div>
 </form>
+<div class="footer">
+  <div class="container my-auto">
+          <div class="copyright text-center my-auto">
+            <span>Copyright &copy; ParameterLabs 2020</span>
+          </div>
+        </div>
+</div>
 {% endblock content %}

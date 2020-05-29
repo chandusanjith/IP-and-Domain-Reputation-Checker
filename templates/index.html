@@ -17,7 +17,16 @@
   background: rgba(0,0,0,0.75) url({% static 'images/q1.gif' %}) no-repeat center center;
   z-index: 10000;
 }
-
+.footer {
+   position: fixed;
+   bottom: 0;
+   width: 100%;
+   padding: 1rem 0;
+   background-color: white;
+   color: grey;
+   font-size: small;
+   text-align: center;
+}
 
   .twoToneCenter {
   text-align: center;
@@ -215,6 +224,13 @@
   </tbody>
   {% endfor %}
 </table>
+<div class="footer">
+  <div class="container my-auto">
+          <div class="copyright text-center my-auto">
+            <span>Copyright &copy; ParameterLabs 2020</span>
+          </div>
+        </div>
+</div>
 <script src="http://code.jquery.com/jquery.js"></script>
  
 <!-- Latest compiled and minified JavaScript -->

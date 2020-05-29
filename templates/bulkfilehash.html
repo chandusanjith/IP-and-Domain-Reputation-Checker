@@ -5,7 +5,16 @@
   <head>
     <link >
 <style>
-
+.footer {
+   position: fixed;
+   bottom: 0;
+   width: 100%;
+   padding: 1rem 0;
+   background-color: white;
+   color: grey;
+   font-size: small;
+   text-align: center;
+}
 #loader {
   display: none;
   position: fixed;
@@ -211,6 +220,13 @@
   </tbody>
   {% endfor %}
 </table>
+<div class="footer">
+  <div class="container my-auto">
+          <div class="copyright text-center my-auto">
+            <span>Copyright &copy; ParameterLabs 2020</span>
+          </div>
+        </div>
+</div>
 <script src="http://code.jquery.com/jquery.js"></script>
  
 <!-- Latest compiled and minified JavaScript -->
@@ -230,6 +246,7 @@ $(function() {
   });
 });
 </script>
+
  </body>
 </html>
 {% endblock %}

@@ -9,7 +9,16 @@
   padding: 14px 80px 18px 36px;
   cursor: pointer;
 }
-
+.footer {
+   position: fixed;
+   bottom: 0;
+   width: 100%;
+   padding: 1rem 0;
+   background-color: white;
+   color: grey;
+   font-size: small;
+   text-align: center;
+}
 .card:hover{
      transform: scale(1.05);
   box-shadow: 0 10px 20px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);
@@ -80,4 +89,12 @@
     </div>
   </div>
 </div>
+<div class="footer">
+  <div class="container my-auto">
+          <div class="copyright text-center my-auto">
+            <span>Copyright &copy; ParameterLabs 2020</span>
+          </div>
+        </div>
+</div>
+
 {% endblock %}
