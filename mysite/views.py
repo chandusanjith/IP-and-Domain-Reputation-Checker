@@ -1,7 +1,7 @@
 from __future__ import print_function
 from django.shortcuts import render
 from django.shortcuts import redirect
-from django.http import HttpResponse, HttpResponseNotFound
+from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 import sys,re, smtplib
 from mysite.models import ips, contacted, CountryData, IPData
 from mysite.abuseipdb import abuseipdbChecker
@@ -24,12 +24,33 @@ from django import db
 import django
 from django.views.static import serve
 import os
+from django.contrib.auth.models import User, auth
+from django.contrib.auth import logout, login
+from django.contrib.auth import logout as django_logout
 
 def DownloadResume(request):
   filepath = 'templates/RESUME.pdf' 
   return serve(request, os.path.basename(filepath),os.path.dirname(filepath))
 
+def LoginPage(request):
+    return render(request, 'Login.html')
 
+def logout(request):
+  django_logout(request)
+  return render(request, 'Login.html')
+
+def AuthUser(request):
+  id = request.POST['userid']
+  password = request.POST['pass']
+
+  user = auth.authenticate(username = id, password = password)
+  
+  if user is not None:
+    auth.login(request, user)
+    return HttpResponseRedirect('/main/')
+  else:
+    messages.info(request, 'Invalid login details')
+    return render(request, 'index.html')
 
 def LoadPage(request):
   b = IPData.objects.all()

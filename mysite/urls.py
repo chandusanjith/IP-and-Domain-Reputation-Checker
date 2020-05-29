@@ -15,12 +15,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from mysite.views import LoadPage, LoadCheckIp, checksingleip, ReadXl,    export_users_xls, About, Contact, addcontact, ReadBulk, ContactDev, DownloadResume
+from mysite.views import LoadPage, LoadCheckIp, checksingleip, ReadXl,    export_users_xls, About, Contact, addcontact, ReadBulk, ContactDev, LoginPage,DownloadResume, AuthUser, logout
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', LoadPage),
-    #path('main/', LoadPage),
+    path('', LoginPage),
+    path('Authuser/', AuthUser),
+    path('Logout/', logout),
+    path('main/', LoadPage),
     path('loadcip/',LoadCheckIp),
     path('checksingleip/', checksingleip),
     path('ipxl/', ReadXl),
