@@ -43,8 +43,8 @@ class CountryData(models.Model):
        return "{}-{}".format(self.country, self.blklistcount)
 
 class Hashes(models.Model):
-  reference = models.TextField()
-  hashes = models.TextField()
-  family = models.TextField()
-  type = models.TextField()
-  risk = models.TextField()
+  reference = models.TextField(null=True)
+  hashes = models.TextField(null=True)
+  family = models.TextField(null=True)
+  type = models.TextField(null=True)
+  risk = models.TextField(null=True)

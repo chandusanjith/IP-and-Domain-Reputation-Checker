@@ -479,7 +479,7 @@ def FileHashSingle(request):
          hashcount = d[0].hashcount + 1
          IPData.objects.filter(pk = 1).update(hashcount  = hashcount)
          context = {
-           'family': part1[0][0][0],
+           'family': part1[0][0],
            'type': part1[1],
            'risk': part1[2],
            'hashed': hashed,
@@ -560,11 +560,13 @@ def BulkHash(request):
 def checkhash(hashed, ref):
     db.connections.close_all()
     part1 = myXForceHashChecker("https://api.xforce.ibmcloud.com/malware/" + hashed)
-    a = Hashes(reference = ref, hashes = hashed, family =part1[0][0][0], type = part1[1], risk = part1[2] )
+    print(part1)
+    a = Hashes(reference = ref, hashes = hashed, family =part1[0][0], type = part1[1], risk = part1[2] )
     a.save()
     d = IPData.objects.filter(pk = 1)
     hashcount = d[0].hashcount + 1
     IPData.objects.filter(pk = 1).update(hashcount  = hashcount)
+    django.db.connection.close()
 
 def downxlshash(request, ref):
     response = HttpResponse(content_type='application/ms-excel')
