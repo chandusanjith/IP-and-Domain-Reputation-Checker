@@ -48,3 +48,10 @@ class Hashes(models.Model):
   family = models.TextField(null=True)
   type = models.TextField(null=True)
   risk = models.TextField(null=True)
+
+  def __str__(self):
+       return "{}-{}".format(self.reference, self.risk)
+
+class Ratings(models.Model):
+  timestamp = models.DateTimeField(auto_now_add=True)
+  rating = models.IntegerField()

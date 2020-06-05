@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 import sys,re, smtplib
-from mysite.models import ips, contacted, CountryData, IPData, Hashes
+from mysite.models import ips, contacted, CountryData, IPData, Hashes, Ratings
 from mysite.abuseipdb import abuseipdbChecker
 from mysite.sans import sansChecker
 from mysite.myIPwhois import IPWhoisChecker
@@ -29,6 +29,33 @@ from django.contrib.auth import logout, login
 from django.contrib.auth import logout as django_logout
 
 
+
+
+def Rating(request):
+  count = 1
+  if not request.user.is_authenticated:
+        return render(request, 'Login.html')
+  else:
+     star1 = request.POST.get("stared1")
+     star2 = request.POST.get("stared2")
+     star3 = request.POST.get("stared3")
+     star4 = request.POST.get("stared4")
+     star5 = request.POST.get("stared5")
+     print(star1)
+     if star1 ==  "on":
+       count = 1
+     if star2 == "on":
+       count = 2
+     if star3 == "on":
+       count = 3 
+     if star4 == "on":
+       count = 4
+     if star5 == "on":
+       count = 5
+     a = Ratings(rating = count)
+     a.save()
+     messages.info(request, 'Thanks for the rating!!')
+     return HttpResponseRedirect('/main/')
 
 def DownloadResume(request):
   if not request.user.is_authenticated:
@@ -66,8 +93,24 @@ def LoadPage(request):
   else:
       b = IPData.objects.all()
       a = CountryData.objects.all()
-      print(a)
+      total_rating_count = Ratings.objects.all().count()
+      fivestar_count = Ratings.objects.filter(rating = 5).count()
+      fourstar_count = Ratings.objects.filter(rating = 4).count()
+      threestar_count = Ratings.objects.filter(rating = 3).count()
+      twostar_count = Ratings.objects.filter(rating = 2).count()
+      onestar_count = Ratings.objects.filter(rating = 1).count()
+      avg_ratings = ((5 *fivestar_count) + (4 * fourstar_count) + (3*threestar_count) + (2*twostar_count) + (1*onestar_count))/total_rating_count
+      rounded_average = round(avg_ratings)
+      avg_ratings = round(avg_ratings, 1)
       context = {
+       'total_rating_count':total_rating_count,
+       'fivestar_count':fivestar_count,
+        'fourstar_count':fourstar_count,
+        'threestar_count':threestar_count,
+        'twostar_count':twostar_count,
+        'onestar_count':onestar_count,
+        'avg_ratings':avg_ratings,
+        'rounded_average':rounded_average,
       'cdata': a,
       'ipdata': b}
       return render(request, 'Main.html', context)
