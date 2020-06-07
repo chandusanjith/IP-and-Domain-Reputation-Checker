@@ -33,64 +33,34 @@ from django.contrib.auth import logout as django_logout
 
 def Rating(request):
   count = 1
-  if not request.user.is_authenticated:
-        return render(request, 'Login.html')
-  else:
-     star1 = request.POST.get("stared1")
-     star2 = request.POST.get("stared2")
-     star3 = request.POST.get("stared3")
-     star4 = request.POST.get("stared4")
-     star5 = request.POST.get("stared5")
-     print(star1)
-     if star1 ==  "on":
-       count = 1
-     if star2 == "on":
-       count = 2
-     if star3 == "on":
-       count = 3 
-     if star4 == "on":
-       count = 4
-     if star5 == "on":
-       count = 5
-     a = Ratings(rating = count)
-     a.save()
-     messages.info(request, 'Thanks for the rating!!')
-     return HttpResponseRedirect('/main/')
+  star1 = request.POST.get("stared1")
+  star2 = request.POST.get("stared2")
+  star3 = request.POST.get("stared3")
+  star4 = request.POST.get("stared4")
+  star5 = request.POST.get("stared5")
+  print(star1)
+  if star1 ==  "on":
+    count = 1
+  if star2 == "on":
+    count = 2
+  if star3 == "on":
+    count = 3 
+  if star4 == "on":
+     count = 4
+  if star5 == "on":
+    count = 5
+  a = Ratings(rating = count)
+  a.save()
+  messages.info(request, 'Thanks for the rating!!')
+  return HttpResponseRedirect('/main/')
 
 def DownloadResume(request):
-  if not request.user.is_authenticated:
-        return render(request, 'Login.html')
-  else:
     filepath = 'templates/RESUME.pdf' 
     return serve(request, os.path.basename(filepath),os.path.dirname(filepath))
 
-def LoginPage(request):
-    return render(request, 'Login.html')
 
-def logout(request):
-  if not request.user.is_authenticated:
-        return render(request, 'Login.html')
-  else:
-     django_logout(request)
-     return render(request, 'Login.html')
-
-def AuthUser(request):
-  id = request.POST['userid']
-  password = request.POST['pass']
-
-  user = auth.authenticate(username = id, password = password)
-  
-  if user is not None:
-    auth.login(request, user)
-    return HttpResponseRedirect('/main/')
-  else:
-    messages.info(request, 'Invalid login details')
-    return render(request, 'Login.html')
 
 def LoadPage(request):
-  if not request.user.is_authenticated:
-        return render(request, 'Login.html')
-  else:
       b = IPData.objects.all()
       a = CountryData.objects.all()
       total_rating_count = Ratings.objects.all().count()
@@ -116,28 +86,16 @@ def LoadPage(request):
       return render(request, 'Main.html', context)
 
 def LoadCheckIp(request):
-  if not request.user.is_authenticated:
-        return render(request, 'Login.html')
-  else:
        return render(request, 'checkip.html')
 
 def About(request):
-  if not request.user.is_authenticated:
-        return render(request, 'Login.html')
-  else:
         return render(request, 'About.html')
 
 def ContactDev(request):
-  if not request.user.is_authenticated:
-        return render(request, 'Login.html')
-  else:
         return render(request, 'Developer.html')
 
 
 def addcontact(request):
-  if not request.user.is_authenticated:
-        return render(request, 'Login.html')
-  else:
       name = request.POST['namec']
       email = request.POST['email']
       message = request.POST['msg']
@@ -148,15 +106,9 @@ def addcontact(request):
       return render(request, 'checkip.html')   
 
 def Contact(request):
-  if not request.user.is_authenticated:
-        return render(request, 'Login.html')
-  else:
       return render(request, 'contactus.html')
 
 def checksingleip(request):
-  if not request.user.is_authenticated:
-        return render(request, 'Login.html')
-  else:
       ip = request.POST['singleip']
       if ip == '':
           messages.info(request, 'Field is empty!!')
@@ -321,9 +273,6 @@ def checkIBM(ipaddress):
 
 
 def ReadBulk(request):
-    if not request.user.is_authenticated:
-        return render(request, 'Login.html')
-    else:
         ipss = request.POST['names']
         ip_list = ipss.split()
         if not ip_list:
@@ -348,9 +297,6 @@ def ReadBulk(request):
         
 
 def ReadXl(request):
-    if not request.user.is_authenticated:
-        return render(request, 'Login.html')
-    else:
         if "GET" == request.method:
             return render(request, 'index.html', {'button': 0})
         else:
@@ -507,9 +453,6 @@ def export_users_xls(request, ref):
 
 
 def FileHashSingle(request):
-  if not request.user.is_authenticated:
-         return render(request, 'Login.html')
-  else:
       if request.method == "GET":
           return render(request, 'checkfilehash.html')
       else:
@@ -531,9 +474,6 @@ def FileHashSingle(request):
 
 
 def HashBulkRead(request):
-    if not request.user.is_authenticated:
-        return render(request, 'Login.html')
-    else:
         hashes = request.POST['names']
         hashes_list = hashes.split()
         if not hashes_list:
@@ -558,9 +498,6 @@ def HashBulkRead(request):
 
 
 def BulkHash(request):
-  if not request.user.is_authenticated:
-         return render(request, 'Login.html')
-  else:
         if "GET" == request.method:
             return render(request, 'bulkfilehash.html', {'button': 0})
         else:

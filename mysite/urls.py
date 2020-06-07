@@ -15,13 +15,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from mysite.views import LoadPage, LoadCheckIp, checksingleip, ReadXl,    export_users_xls, About, Contact, addcontact, ReadBulk, ContactDev, LoginPage,DownloadResume, AuthUser, logout, FileHashSingle, BulkHash, downxlshash,HashBulkRead, Rating
+from mysite.views import LoadPage, LoadCheckIp, checksingleip, ReadXl,    export_users_xls, About, Contact, addcontact, ReadBulk, ContactDev, DownloadResume, FileHashSingle, BulkHash, downxlshash,HashBulkRead, Rating
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', LoginPage),
-    path('Authuser/', AuthUser),
-    path('Logout/', logout),
+    path('', LoadPage),
+    #path('Authuser/', AuthUser),
+    #path('Logout/', logout),
     path('main/', LoadPage),
     path('loadcip/',LoadCheckIp),
     path('checksingleip/', checksingleip),
