@@ -58,8 +58,6 @@ def DownloadResume(request):
     filepath = 'templates/RESUME.pdf' 
     return serve(request, os.path.basename(filepath),os.path.dirname(filepath))
 
-
-
 def LoadPage(request):
       b = IPData.objects.all()
       a = CountryData.objects.all()
@@ -116,52 +114,33 @@ def checksingleip(request):
       mySansPrint2 = ''
       myAbuseIPDBPrint3 = ''
       myXForcePrint4 = ''
-      print('>>>>> Welcome to WebScraping Tool <<<<<')
-
-            # regular expression for IP
+      # regular expression for IP
       re_ip = re.compile('^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$')
 
-      print("Now checking " + ip + " ...")
-      print("")
-
-            # If the IP format is valid:
+      # If the IP format is valid:
       if re_ip.match(ip):
-        
-        
-                # Call myIPwhois.py
+        # Call myIPwhois.py
         #part1 = IPWhoisChecker("https://www.abuseipdb.com/whois/" + ip)
         #part1 = part1[345:]
         part1 = checkippydnsbl(ip)      
-
-                # Call sans.py
+        # Call sans.py
         part2 =  sansChecker(ip)
-
-
-                # Call abuseipdb.py
+        # Call abuseipdb.py
         try:
           part3 =  abuseipdbChecker("https://www.abuseipdb.com/check/" + ip)
         except:
-          part3 = "Local IP Possibly safe"
-      
-        # Call xforceIBM.py
-    
+          part3 = "Local IP Possibly safe"      
+        # Call xforceIBM.py    
         part4 = myXForceChecker("https://api.xforce.ibmcloud.com/ipr/" + ip)
         try:
           part5 = VirusTotalChecker(ip)
         except:
           part5 = "Virus Total Down, API Not responding!!!"
-
         part6 = IPWhoisChecker("https://www.abuseipdb.com/whois/" + ip)
-
-        print("virustotal")
-        print(part5)
         if part5 == "POSSIBLY SAFE" or part5 == "Virus Total Down, API Not responding!!!":
-            print("noblk")
             res5 = "False"
         else:
-            print("blk")
             res5 = "True"
-          
 
         if part1 == True or part1 == False:
           ip_checker = pydnsbl.DNSBLIpChecker()
@@ -189,18 +168,14 @@ def checksingleip(request):
             status = "09"
         else:
               status = "00"
-        print(part4[0][9:])
         if  CountryData.objects.filter(country = part4[0][9:]).exists():
-            print("coming here")
             c = CountryData.objects.filter(country = part4[0][9:])
             count = c[0].blklistcount
             count = count + 1
             country = CountryData.objects.filter(country = part4[0][9:]).update(blklistcount = count)
         else:
-            print("coming else part")
             c = CountryData(country = part4[0][9:],blklistcount = 1 )
             c.save()
-
         d = IPData.objects.filter(pk = 1)
         ipcount = d[0].ipcount + 1
         if status == "09":
@@ -221,24 +196,20 @@ def checksingleip(request):
                 'isip': ip,
                 'dns': "00"}
         return render(request, 'checkip.html', context)    
-
-            # If the input is a domain or other strings, let the website validate then ...
+      # If the input is a domain or other strings, let the website validate then ...
       else:
-                #Call myIPwhois.py
+          #Call myIPwhois.py
           part1 =  IPWhoisChecker("https://www.abuseipdb.com/whois/" + ip)
-
-                # Call sans.py
-                # sans.sansChecker("https://isc.sans.edu/api/ip/" + ip)
-                #part2 = sansChecker(ip)
-
-                # Call abuseipdb.py
+          # Call sans.py
+          # sans.sansChecker("https://isc.sans.edu/api/ip/" + ip)
+          #part2 = sansChecker(ip)
+          # Call abuseipdb.py
           part3 = abuseipdbChecker("https://www.abuseipdb.com/check/" + ip)
-
           part4 = myXForceChecker("https://api.xforce.ibmcloud.com/url/" + ip)
-              #context = {
-                #'part2': part1,
-                #'part3':part3,
-                #'part4':part4 }
+          #context = {
+          #'part2': part1,
+          #'part3':part3,
+          #'part4':part4 }
           d = IPData.objects.filter(pk = 1)
           count = d[0].domaincount + 1
           dat = IPData.objects.filter(pk = 1).update(domaincount = count)
@@ -248,8 +219,6 @@ def checksingleip(request):
                 'isip': ip,
                 'dns': "01"}
           return render(request, 'checkip.html', context)    
-
-
           
 def create_ref_code():
     return ''.join(random.choices(string.ascii_lowercase + string.digits, k=20))
@@ -262,13 +231,10 @@ def checkippydnsbl(ipaddress):
 
 def checkipchandu(ipaddress):
     result = sansChecker(ipaddress)
-    print(result)
     return result
 
 def checkIBM(ipaddress):
-    print("chandu comimg here ibm function")
     result = myXForceChecker("https://api.xforce.ibmcloud.com/ipr/" + ipaddress)
-    print("chandu xls ibm xforce")
     return result
 
 
@@ -284,8 +250,6 @@ def ReadBulk(request):
             ref_list = list()
             for i in range(ip_length):
               ref_list.append(ref)
-            print("reflist")
-            print(ref_list)
             p = Pool(10)
             p.map(check, ip_list, ref_list)
             result_to_display = ips.objects.filter(reference = ref_list[0])
@@ -301,18 +265,13 @@ def ReadXl(request):
             return render(request, 'index.html', {'button': 0})
         else:
             excel_file = request.FILES["excel_file"]
-
             if not excel_file:
               messages.info(request, 'Please select a file!!')
               return render(request, 'index.html')
             # you may put validations here to check extension or file size
-
             wb = openpyxl.load_workbook(excel_file)
-
             # getting a particular sheet by name out of many sheets
             worksheet = wb["Sheet1"]
-            print(worksheet)
-            
             excel_data = list()
             # iterating over the rows and
             # getting value from each cell in row
@@ -323,30 +282,20 @@ def ReadXl(request):
                 for cell in row:
                     row_data.append(str(cell.value))
                     ref_data.append(ref)
-            print(row_data)
             p = Pool(10)
-            print(ref)
             p.map(check, row_data, ref_data)
-            print(ref)
-            print("finished dfunction")
             result_to_display = ips.objects.filter(reference = ref_data[0])
             context = {'data_ip': result_to_display,
                     'reference': ref_data[0],
                     'button': 1}
-
             return render(request, 'index.html', context)
 
 def check(ip, ref):
   db.connections.close_all()
-  print("function")
-  print(ip)
-  print(ref)
   status1 = checkippydnsbl(ip)
   status2 = checkipchandu(ip)
   status3 = checkIBM(ip)
   status4 = abuseipdbChecker("https://www.abuseipdb.com/check/" + ip)
-
-
   if not status4:
       req4 = "False"
   else:
@@ -360,41 +309,28 @@ def check(ip, ref):
   else:
       req2 = "False"
   if status1 == True or req2 == "True" or req3 == "True" or req4 == "True":
-      print('at block')
       dbstatus = "BLACKLISTED"
   else:
-      print('at no block')
       dbstatus = "POSSIBLY SAFE"
-  
-  print("chandu here to check country")
-  print(status3[0][9:])
-
   if req4 == "True":
      abuse = status4[0]
   else:
      abuse = "NIL"
-
   if req3 == "True":
      ibm = status3
   else:
      ibm = "NIL"
-
   if req2 == "True":
      sans = status2
   else:
-     sans = "NIL"
-  
+     sans = "NIL"  
   if status1 == True:
-     print("chandu here dns bulk")
      ip_checker = pydnsbl.DNSBLIpChecker()
      result=ip_checker.check(ip)
      dnsbl = result.detected_by
   else:
-     print("chandu here NIL")
      dnsbl = "NIL"
-
   if  CountryData.objects.filter(country = status3[0][9:]).exists():
-
         c = CountryData.objects.filter(country = status3[0][9:])
         count = c[0].blklistcount
         count = count + 1
@@ -411,43 +347,30 @@ def check(ip, ref):
         blacklistedip = d[0].blacklistedip
         goodip = d[0].goodip + 1
   dat = IPData.objects.filter(pk = 1).update(ipcount = ipcount,blacklistedip = blacklistedip, goodip = goodip )
-
   a = ips(reference = ref, ipaddress = ip, status = dbstatus, remarks = abuse, Sans =sans, Pysbil =dnsbl , VirusTotal =   "virustotal", IbmXForce = ibm)
   a.save()
   
-
-
 
 def export_users_xls(request, ref):
     filename = "ParameterLabs" + str(datetime.datetime.now()) + ".xls"
     response = HttpResponse(content_type='application/ms-excel')
     response['Content-Disposition'] = 'attachment; filename="ParameterLabs.xls"'
-
     wb = xlwt.Workbook(encoding='utf-8')
     ws = wb.add_sheet('parameter')
-
     # Sheet header, first row
     row_num = 0
-
     font_style = xlwt.XFStyle()
     font_style.font.bold = True
-
     columns = ['IP Address', 'Status', 'AbuseIPDB Result', 'Sans Result', 'PYSBIL Result', 'IBM X-Force Result']
-
     for col_num in range(len(columns)):
         ws.write(row_num, col_num, columns[col_num], font_style)
-
     # Sheet body, remaining rows
     font_style = xlwt.XFStyle()
-
     rows = ips.objects.filter(reference = ref).values_list('ipaddress','status','remarks','Sans','Pysbil','IbmXForce')
-    print("chandu row")
-    print(rows)
     for row in rows:
         row_num += 1
         for col_num in range(len(row)):
             ws.write(row_num, col_num, row[col_num], font_style)
-
     wb.save(response)
     return response
 
@@ -457,63 +380,62 @@ def FileHashSingle(request):
           return render(request, 'checkfilehash.html')
       else:
          hashed = request.POST['singlehash']
-         if hashed == '':
-           messages.info(request, 'Field is empty!!')
-           return render(request, 'checkfilehash.html')
-         part1 = myXForceHashChecker("https://api.xforce.ibmcloud.com/malware/" + hashed)
-         d = IPData.objects.filter(pk = 1)
-         hashcount = d[0].hashcount + 1
-         IPData.objects.filter(pk = 1).update(hashcount  = hashcount)
-         context = {
+         try:
+            if hashed == '':
+               messages.info(request, 'Field is empty!!')
+               return render(request, 'checkfilehash.html')
+            part1 = myXForceHashChecker("https://api.xforce.ibmcloud.com/malware/" + hashed)
+            d = IPData.objects.filter(pk = 1)
+            hashcount = d[0].hashcount + 1
+            IPData.objects.filter(pk = 1).update(hashcount  = hashcount)
+            context = {
            'family': part1[0][0],
            'type': part1[1],
            'risk': part1[2],
            'hashed': hashed,
-         }
-         return render(request, 'checkfilehash.html', context)
-
+            }
+            return render(request, 'checkfilehash.html', context)
+         except:
+            messages.error(request, 'check input, error occured!!!!')
+            return render(request, 'checkfilehash.html')
+      
 
 def HashBulkRead(request):
-        hashes = request.POST['names']
-        hashes_list = hashes.split()
+    hashes = request.POST['names']
+    hashes_list = hashes.split()
+    try:
         if not hashes_list:
-          messages.info(request, 'Field is empty!!')
-          return render(request, 'bulkfilehash.html')
+            messages.info(request, 'Field is empty!!')
+            return render(request, 'bulkfilehash.html')
         else:
             ref = create_ref_code()
             hash_length = len(hashes_list)
             ref_list = list()
             for i in range(hash_length):
-              ref_list.append(ref)
-            print("reflist")
-            print(ref_list)
-            p = Pool(20)
-            p.map(checkhash, hashes_list, ref_list)
-            result_to_display = Hashes.objects.filter(reference = ref_list[0])
-            context = {'data_ip': result_to_display,
+                ref_list.append(ref)
+                p = Pool(20)
+                p.map(checkhash, hashes_list, ref_list)
+                result_to_display = Hashes.objects.filter(reference = ref_list[0])
+                context = {'data_ip': result_to_display,
                     'reference': ref_list[0],
                     'button': 1}
-
-            return render(request, 'bulkfilehash.html', context)
-
+        return render(request, 'bulkfilehash.html', context)
+    except:
+            messages.info(request, 'check your input, error occured!!')
+            return render(request, 'bulkfilehash.html')
 
 def BulkHash(request):
         if "GET" == request.method:
             return render(request, 'bulkfilehash.html', {'button': 0})
         else:
             excel_file = request.FILES["excel_file"]
-
             if not excel_file:
               messages.info(request, 'Please select a file!!')
               return render(request, 'bulkfilehash.html')
             # you may put validations here to check extension or file size
-
             wb = openpyxl.load_workbook(excel_file)
-
             # getting a particular sheet by name out of many sheets
             worksheet = wb["Sheet1"]
-            print(worksheet)
-            
             excel_data = list()
             # iterating over the rows and
             # getting value from each cell in row
@@ -524,12 +446,8 @@ def BulkHash(request):
                 for cell in row:
                     row_data.append(str(cell.value))
                     ref_data.append(ref)
-            print(row_data)
             p = Pool(20)
-            print(ref)
             p.map(checkhash, row_data, ref_data)
-            print(ref)
-            print("finished dfunction")
             result_to_display = Hashes.objects.filter(reference = ref_data[0])
             context = {'data_ip': result_to_display,
                     'reference': ref_data[0],
@@ -540,7 +458,6 @@ def BulkHash(request):
 def checkhash(hashed, ref):
     db.connections.close_all()
     part1 = myXForceHashChecker("https://api.xforce.ibmcloud.com/malware/" + hashed)
-    print(part1)
     a = Hashes(reference = ref, hashes = hashed, family =part1[0][0], type = part1[1], risk = part1[2] )
     a.save()
     d = IPData.objects.filter(pk = 1)
@@ -551,31 +468,21 @@ def checkhash(hashed, ref):
 def downxlshash(request, ref):
     response = HttpResponse(content_type='application/ms-excel')
     response['Content-Disposition'] = 'attachment; filename="ParameterLabs.xls"'
-    print("comimg1")
     wb = xlwt.Workbook(encoding='utf-8')
     ws = wb.add_sheet('parameter')
-
     # Sheet header, first row
     row_num = 0
-
     font_style = xlwt.XFStyle()
     font_style.font.bold = True
-    print("comimg2")
     columns = ['File Hash', 'Risk', 'Type', 'Family']
-    print("comimg3")
     for col_num in range(len(columns)):
         ws.write(row_num, col_num, columns[col_num], font_style)
-    print("comimg4")
     # Sheet body, remaining rows
     font_style = xlwt.XFStyle()
-    print("comimg5")
     rows = Hashes.objects.filter(reference = ref).values_list('hashes','risk','type','family')
-    print("chandu row")
-    print(rows)
     for row in rows:
         row_num += 1
         for col_num in range(len(row)):
             ws.write(row_num, col_num, row[col_num], font_style)
-
     wb.save(response)
     return response
