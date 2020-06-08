@@ -119,7 +119,6 @@ def checksingleip(request):
         with ThreadPoolExecutor(max_workers=5) as executor:
               part1 = executor.submit(checkippydnsbl, ip)     
               part2 = executor.submit(sansChecker, ip)
-              print("coming inside")
               try:
                 part3 =  executor.submit (abuseipdbChecker,("https://www.abuseipdb.com/check/" + ip))
               except:
@@ -135,6 +134,7 @@ def checksingleip(request):
               part3 = part3.result()
               part4 = part4.result()
               part5 = part5.result()
+              part6 = part6.result()
               if part5 == "POSSIBLY SAFE" or part5 == "Virus Total Down, API Not responding!!!":
                   res5 = "False"
               else:

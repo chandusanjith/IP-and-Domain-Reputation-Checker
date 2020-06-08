@@ -2,11 +2,10 @@ import virustotal2
 import csv
 
 def VirusTotalChecker(ip):
-    print("chandu at virustotal")
 
     vt = virustotal2.VirusTotal2("aef48c9cfa4b5a2c4af411b2cf316fafd76417a3bcc13035a59005baa3029df4")
     try:
-        ip_report = vt.retrieve(ip)   #get the VT IP report for this IP
+        ip_report = vt.retrieve(ip) 
     except:
         return(" VirusTotal API error: on ip " + ip)
 
