@@ -101,7 +101,7 @@ def addcontact(request):
       data = contacted(name = name, email = email, message = message, mobile = mobileno, dateofcontact = date.today())
       data.save()
       messages.info(request, 'Thanks, we will contact you soon ')
-      return render(request, 'checkip.html')   
+      return render(request, 'contactus.html')   
 
 def Contact(request):
       return render(request, 'contactus.html')
