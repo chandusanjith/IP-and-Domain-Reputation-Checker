@@ -10,7 +10,7 @@ def abuseipdbChecker(url):
        return "er"
     printResult = []
     if myResult.status_code == 422:
-        exit()
+        return ("Local IP Possibly safe")
     else:
         if url != myResult.url:
             print('Your request has been resolved to ' + myResult.url)
@@ -25,7 +25,7 @@ def abuseipdbChecker(url):
             try:
                 if reportTimes.string == "Important Note:":
                     printResult.append('Note: You probably input a private IP. Please check again ...')
-                    exit()
+                    return ("Local IP Possibly safe")
                 else:
                     printResult.append = ('Reported ' + reportTimes.string + ' timesw')
             except Exception:

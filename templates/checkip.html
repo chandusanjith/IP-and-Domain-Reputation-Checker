@@ -208,8 +208,14 @@ a:hover {
 <p style = "white-space: pre-wrap">{{part6}}</p>
 {% endif %}
 {% if part4 is not null  %}
-<button type="submit" onclick = "show()" class="btn btn--primary btn--inside uppercase">Refresh Screen</button>
+<form action = "/loadcip/">
+<button type='submit' name='btn_login' class='col s12 btn btn-large waves-effect' style = "background-color: #008CBA;color: white;">Clear Screen</button>
+</form>
 {% endif %}
+<br>
+<br>
+<br>
+<br>
 <div class="footer">
   <div class="container my-auto">
           <div class="copyright text-center my-auto">

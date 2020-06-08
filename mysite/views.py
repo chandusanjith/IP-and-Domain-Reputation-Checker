@@ -125,7 +125,7 @@ def checksingleip(request):
                 part3 = "Local IP Possibly safe"          
               part4 = executor.submit (myXForceChecker,("https://api.xforce.ibmcloud.com/ipr/" + ip))
               try:
-                part5 = executor.submit(VirusTotalChecker, ip)
+                part5 = VirusTotalChecker(ip)
               except:
                 part5 = "Virus Total Down, API Not responding!!!"
               part6 = executor.submit (IPWhoisChecker,("https://www.abuseipdb.com/whois/" + ip))
@@ -133,7 +133,6 @@ def checksingleip(request):
               part2 = part2.result()
               part3 = part3.result()
               part4 = part4.result()
-              part5 = part5.result()
               part6 = part6.result()
               if part5 == "POSSIBLY SAFE" or part5 == "Virus Total Down, API Not responding!!!":
                   res5 = "False"
