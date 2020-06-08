@@ -292,6 +292,7 @@ def ReadXl(request):
 
 def check(ip, ref):
   db.connections.close_all()
+  django.db.connection.close()
   status1 = checkippydnsbl(ip)
   status2 = checkipchandu(ip)
   status3 = checkIBM(ip)
@@ -349,6 +350,8 @@ def check(ip, ref):
   dat = IPData.objects.filter(pk = 1).update(ipcount = ipcount,blacklistedip = blacklistedip, goodip = goodip )
   a = ips(reference = ref, ipaddress = ip, status = dbstatus, remarks = abuse, Sans =sans, Pysbil =dnsbl , VirusTotal =   "virustotal", IbmXForce = ibm)
   a.save()
+  db.connections.close_all()
+  django.db.connection.close()
   
 
 def export_users_xls(request, ref):
