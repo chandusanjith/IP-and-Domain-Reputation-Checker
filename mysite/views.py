@@ -117,73 +117,79 @@ def checksingleip(request):
       re_ip = re.compile('^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$')
       if re_ip.match(ip):
         with ThreadPoolExecutor(max_workers=5) as executor:
-              part1 = checkippydnsbl(ip)      
-              part2 =  sansChecker(ip)
+              part1 = executor.submit(checkippydnsbl, ip)     
+              part2 = executor.submit(sansChecker, ip)
+              print("coming inside")
               try:
-                part3 =  abuseipdbChecker("https://www.abuseipdb.com/check/" + ip)
+                part3 =  executor.submit (abuseipdbChecker,("https://www.abuseipdb.com/check/" + ip))
               except:
                 part3 = "Local IP Possibly safe"          
-              part4 = myXForceChecker("https://api.xforce.ibmcloud.com/ipr/" + ip)
+              part4 = executor.submit (myXForceChecker,("https://api.xforce.ibmcloud.com/ipr/" + ip))
               try:
-                part5 = VirusTotalChecker(ip)
+                part5 = executor.submit(VirusTotalChecker, ip)
               except:
                 part5 = "Virus Total Down, API Not responding!!!"
-              part6 = IPWhoisChecker("https://www.abuseipdb.com/whois/" + ip)
-        if part5 == "POSSIBLY SAFE" or part5 == "Virus Total Down, API Not responding!!!":
-            res5 = "False"
-        else:
-            res5 = "True"
-        if part1 == True or part1 == False:
-          ip_checker = pydnsbl.DNSBLIpChecker()
-          result=ip_checker.check(ip)
-          resukt1 = result.detected_by
-        if part3 != "Local IP Possibly safe" or "er":
-          if not part3:
-              req4 = "False"
-          else:
-              req4 = "True"
-        else:
-            part3 = " "
-        if  "Malware" in part4[2]:
-            req3 = "True"
-        else:
-            req3 = "False"               
-        if (int(part2[0][13:])) > 0 :
-            req2 = "True"
-        else:
-            req2 = "False"
-        if part1 == True or req2 == "True" or req3 == "True" or req4 == "True" or res5 == "True":
-            status = "09"
-        else:
-              status = "00"
-        if  CountryData.objects.filter(country = part4[0][9:]).exists():
-            c = CountryData.objects.filter(country = part4[0][9:])
-            count = c[0].blklistcount
-            count = count + 1
-            country = CountryData.objects.filter(country = part4[0][9:]).update(blklistcount = count)
-        else:
-            c = CountryData(country = part4[0][9:],blklistcount = 1 )
-            c.save()
-        d = IPData.objects.filter(pk = 1)
-        ipcount = d[0].ipcount + 1
-        if status == "09":
-            blacklistedip = d[0].blacklistedip + 1
-            goodip = d[0].goodip
-        else:
-            blacklistedip = d[0].blacklistedip
-            goodip = d[0].goodip + 1
-        dat = IPData.objects.filter(pk = 1).update(ipcount = ipcount,blacklistedip = blacklistedip, goodip = goodip )
+              part6 = executor.submit (IPWhoisChecker,("https://www.abuseipdb.com/whois/" + ip))
+              part1 = part1.result()
+              part2 = part2.result()
+              part3 = part3.result()
+              part4 = part4.result()
+              part5 = part5.result()
+              if part5 == "POSSIBLY SAFE" or part5 == "Virus Total Down, API Not responding!!!":
+                  res5 = "False"
+              else:
+                  res5 = "True"
+              if part1 == True or part1 == False:
+                ip_checker = pydnsbl.DNSBLIpChecker()
+                result=ip_checker.check(ip)
+                resukt1 = result.detected_by
+              if part3 != "Local IP Possibly safe" or "er":
+                if not part3:
+                    req4 = "False"
+                else:
+                    req4 = "True"
+              else:
+                  part3 = " "
+              if  "Malware" in part4[2]:
+                  req3 = "True"
+              else:
+                  req3 = "False"               
+              if (int(part2[0][13:])) > 0 :
+                  req2 = "True"
+              else:
+                  req2 = "False"
+              if part1 == True or req2 == "True" or req3 == "True" or req4 == "True" or res5 == "True":
+                  status = "09"
+              else:
+                    status = "00"
+              if  CountryData.objects.filter(country = part4[0][9:]).exists():
+                  c = CountryData.objects.filter(country = part4[0][9:])
+                  count = c[0].blklistcount
+                  count = count + 1
+                  country = CountryData.objects.filter(country = part4[0][9:]).update(blklistcount = count)
+              else:
+                  c = CountryData(country = part4[0][9:],blklistcount = 1 )
+                  c.save()
+              d = IPData.objects.filter(pk = 1)
+              ipcount = d[0].ipcount + 1
+              if status == "09":
+                  blacklistedip = d[0].blacklistedip + 1
+                  goodip = d[0].goodip
+              else:
+                  blacklistedip = d[0].blacklistedip
+                  goodip = d[0].goodip + 1
+              dat = IPData.objects.filter(pk = 1).update(ipcount = ipcount,blacklistedip = blacklistedip, goodip = goodip )
 
-        context = {'part1': resukt1,
-                'part2': part2,
-                'part3':part3,
-                'part4': part4,
-                'part5':part5,
-                'part6':part6,
-                'status': status,
-                'isip': ip,
-                'dns': "00"}
-        return render(request, 'checkip.html', context)    
+              context = {'part1': resukt1,
+                      'part2': part2,
+                      'part3':part3,
+                      'part4': part4,
+                      'part5':part5,
+                      'part6':part6,
+                      'status': status,
+                      'isip': ip,
+                      'dns': "00"}
+              return render(request, 'checkip.html', context)    
       else:
           part1 =  IPWhoisChecker("https://www.abuseipdb.com/whois/" + ip)
           part3 = abuseipdbChecker("https://www.abuseipdb.com/check/" + ip)
