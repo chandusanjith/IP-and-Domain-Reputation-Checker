@@ -29,7 +29,7 @@ def abuseipdbChecker(url):
                 else:
                     printResult.append = ('Reported ' + reportTimes.string + ' timesw')
             except Exception:
-               print('error')
+               pass
             tables = soup.find_all(class_="table table-striped responsive-table")
             if tables != []:
                 rawData = []

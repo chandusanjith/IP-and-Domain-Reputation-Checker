@@ -273,10 +273,15 @@ def ReadXl(request):
 def check(ip, ref):
   db.connections.close_all()
   django.db.connection.close()
-  status1 = checkippydnsbl(ip)
-  status2 = checkipchandu(ip)
-  status3 = checkIBM(ip)
-  status4 = abuseipdbChecker("https://www.abuseipdb.com/check/" + ip)
+  with ThreadPoolExecutor(max_workers=5) as executor:
+      status1 = executor.submit(checkippydnsbl,ip)
+      status2 = executor.submit(checkipchandu,ip)
+      status3 = executor.submit(checkIBM,ip)
+      status4 = executor.submit(abuseipdbChecker,("https://www.abuseipdb.com/check/" + ip))
+      status1 = status1.result()
+      status2 = status2.result()
+      status3 = status3.result()
+      status4 = status4.result()
   if not status4:
       req4 = "False"
   else:
