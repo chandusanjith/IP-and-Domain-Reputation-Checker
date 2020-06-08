@@ -27,7 +27,7 @@ import os
 from django.contrib.auth.models import User, auth
 from django.contrib.auth import logout, login
 from django.contrib.auth import logout as django_logout
-
+from concurrent.futures import ThreadPoolExecutor
 
 
 
@@ -114,39 +114,29 @@ def checksingleip(request):
       mySansPrint2 = ''
       myAbuseIPDBPrint3 = ''
       myXForcePrint4 = ''
-      # regular expression for IP
       re_ip = re.compile('^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$')
-
-      # If the IP format is valid:
       if re_ip.match(ip):
-        # Call myIPwhois.py
-        #part1 = IPWhoisChecker("https://www.abuseipdb.com/whois/" + ip)
-        #part1 = part1[345:]
-        part1 = checkippydnsbl(ip)      
-        # Call sans.py
-        part2 =  sansChecker(ip)
-        # Call abuseipdb.py
-        try:
-          part3 =  abuseipdbChecker("https://www.abuseipdb.com/check/" + ip)
-        except:
-          part3 = "Local IP Possibly safe"      
-        # Call xforceIBM.py    
-        part4 = myXForceChecker("https://api.xforce.ibmcloud.com/ipr/" + ip)
-        try:
-          part5 = VirusTotalChecker(ip)
-        except:
-          part5 = "Virus Total Down, API Not responding!!!"
-        part6 = IPWhoisChecker("https://www.abuseipdb.com/whois/" + ip)
+        with ThreadPoolExecutor(max_workers=5) as executor:
+              part1 = checkippydnsbl(ip)      
+              part2 =  sansChecker(ip)
+              try:
+                part3 =  abuseipdbChecker("https://www.abuseipdb.com/check/" + ip)
+              except:
+                part3 = "Local IP Possibly safe"          
+              part4 = myXForceChecker("https://api.xforce.ibmcloud.com/ipr/" + ip)
+              try:
+                part5 = VirusTotalChecker(ip)
+              except:
+                part5 = "Virus Total Down, API Not responding!!!"
+              part6 = IPWhoisChecker("https://www.abuseipdb.com/whois/" + ip)
         if part5 == "POSSIBLY SAFE" or part5 == "Virus Total Down, API Not responding!!!":
             res5 = "False"
         else:
             res5 = "True"
-
         if part1 == True or part1 == False:
           ip_checker = pydnsbl.DNSBLIpChecker()
           result=ip_checker.check(ip)
           resukt1 = result.detected_by
-        
         if part3 != "Local IP Possibly safe" or "er":
           if not part3:
               req4 = "False"
@@ -154,8 +144,6 @@ def checksingleip(request):
               req4 = "True"
         else:
             part3 = " "
-          
-        
         if  "Malware" in part4[2]:
             req3 = "True"
         else:
@@ -196,20 +184,10 @@ def checksingleip(request):
                 'isip': ip,
                 'dns': "00"}
         return render(request, 'checkip.html', context)    
-      # If the input is a domain or other strings, let the website validate then ...
       else:
-          #Call myIPwhois.py
           part1 =  IPWhoisChecker("https://www.abuseipdb.com/whois/" + ip)
-          # Call sans.py
-          # sans.sansChecker("https://isc.sans.edu/api/ip/" + ip)
-          #part2 = sansChecker(ip)
-          # Call abuseipdb.py
           part3 = abuseipdbChecker("https://www.abuseipdb.com/check/" + ip)
           part4 = myXForceChecker("https://api.xforce.ibmcloud.com/url/" + ip)
-          #context = {
-          #'part2': part1,
-          #'part3':part3,
-          #'part4':part4 }
           d = IPData.objects.filter(pk = 1)
           count = d[0].domaincount + 1
           dat = IPData.objects.filter(pk = 1).update(domaincount = count)
@@ -268,13 +246,9 @@ def ReadXl(request):
             if not excel_file:
               messages.info(request, 'Please select a file!!')
               return render(request, 'index.html')
-            # you may put validations here to check extension or file size
             wb = openpyxl.load_workbook(excel_file)
-            # getting a particular sheet by name out of many sheets
             worksheet = wb["Sheet1"]
             excel_data = list()
-            # iterating over the rows and
-            # getting value from each cell in row
             ref = create_ref_code()
             row_data = list()
             ref_data = list()
@@ -360,14 +334,12 @@ def export_users_xls(request, ref):
     response['Content-Disposition'] = 'attachment; filename="ParameterLabs.xls"'
     wb = xlwt.Workbook(encoding='utf-8')
     ws = wb.add_sheet('parameter')
-    # Sheet header, first row
     row_num = 0
     font_style = xlwt.XFStyle()
     font_style.font.bold = True
     columns = ['IP Address', 'Status', 'AbuseIPDB Result', 'Sans Result', 'PYSBIL Result', 'IBM X-Force Result']
     for col_num in range(len(columns)):
         ws.write(row_num, col_num, columns[col_num], font_style)
-    # Sheet body, remaining rows
     font_style = xlwt.XFStyle()
     rows = ips.objects.filter(reference = ref).values_list('ipaddress','status','remarks','Sans','Pysbil','IbmXForce')
     for row in rows:
@@ -435,13 +407,9 @@ def BulkHash(request):
             if not excel_file:
               messages.info(request, 'Please select a file!!')
               return render(request, 'bulkfilehash.html')
-            # you may put validations here to check extension or file size
             wb = openpyxl.load_workbook(excel_file)
-            # getting a particular sheet by name out of many sheets
             worksheet = wb["Sheet1"]
             excel_data = list()
-            # iterating over the rows and
-            # getting value from each cell in row
             ref = create_ref_code()
             row_data = list()
             ref_data = list()
@@ -473,14 +441,12 @@ def downxlshash(request, ref):
     response['Content-Disposition'] = 'attachment; filename="ParameterLabs.xls"'
     wb = xlwt.Workbook(encoding='utf-8')
     ws = wb.add_sheet('parameter')
-    # Sheet header, first row
     row_num = 0
     font_style = xlwt.XFStyle()
     font_style.font.bold = True
     columns = ['File Hash', 'Risk', 'Type', 'Family']
     for col_num in range(len(columns)):
         ws.write(row_num, col_num, columns[col_num], font_style)
-    # Sheet body, remaining rows
     font_style = xlwt.XFStyle()
     rows = Hashes.objects.filter(reference = ref).values_list('hashes','risk','type','family')
     for row in rows:
