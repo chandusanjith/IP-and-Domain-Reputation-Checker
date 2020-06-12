@@ -102,7 +102,63 @@ a:hover {
   outline: 0;
   padding: 22px 18px;
 }
+/* Popup container - can be anything you want */
+.popup {
+  position: absolute;
+  display: inline-block;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
 
+/* The actual popup */
+.popup .popuptext {
+  visibility: hidden;
+  width: 500px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 8px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -80px;
+}
+
+/* Popup arrow */
+.popup .popuptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+/* Toggle this class - hide and show the popup */
+.popup .show {
+  visibility: visible;
+  -webkit-animation: fadeIn 1s;
+  animation: fadeIn 1s;
+}
+
+/* Add animation (fade in the popup) */
+@-webkit-keyframes fadeIn {
+  from {opacity: 0;} 
+  to {opacity: 1;}
+}
+
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity:1 ;}
+}
+#more {display: none;}
 </style>
 <script>
     function show() {
@@ -143,79 +199,87 @@ a:hover {
               <div id="id2"  style="display:none" alt="">Processing, wait for a minute or so...</div>
 	</div>
 </div>
+<div class="container">
 {% if part4 is not null  %}
 <h1> Displaying Result for : {{isip}} </h1>
 {% endif %}
 {%if status == '09'%}
 <span class="s1">BLACKLISTED</span>
+<h1>Match Score: {{match_score}}%<div class="popup" onmouseover="myFunction()" onmouseout="myFunction()">&#9432;
+  <span class="popuptext" id="myPopup">Score is calculated based on scrapped results of all web applications, if score is grater than 0% then that ip is blacklisted.</span>
+</div></h1>
 {% endif %}
 {% if status == '00' %}
 <span class="s2">Possible Good Ip</span>
+<h1>Match Score: {{match_score}}%<div class="popup" onmouseover="myFunction()" onmouseout="myFunction()">&#9432;
+  <span class="popuptext" id="myPopup">Score is calculated based on results of all web applications, if score is grater than 0% then that ip is blacklisted.</span>
+</div></h1>
+{% endif %}
+{% if match_score != 0 %}
+<div id="piechart" style="width: 600px; height: 300px; top: 50%; left: 50%;"></div>
 {% endif %}
 {% if part4 is not null  %}
-<h1> -------------------------------- </h1>
+<button onclick="readMore()" class="btn btn--primary" id="myBtn">Click here to check analysis log</button>
+{% endif %}
+<div id = "more">
+{% if part4 is not null  %}
+<h1  > -------------------------------- </h1>
 {% endif %}
 {% if part4 is not null  %}
-<h1> [.] IBM X-Force Result:</h1>
+<h1 > [.] IBM X-Force Result:</h1>
 {% endif %}
 {% for info1 in part4 %}
-<p>{{info1}}</p>
+<p  >{{info1}}</p>
 {% endfor %}
 {% if part4 is not null  %}
-<h1> -------------------------------- </h1>
+<h1 > -------------------------------- </h1>
 {% endif %}
 {% if part4 is not null and dns == "00" %}
-<h1> [.] VirusTotal Result:</h1>
+<h1 > [.] VirusTotal Result:</h1>
 {% endif %}
 {% if part4 is not null and dns == "00" %}
-<p style = "white-space: pre-wrap">{{part5}}</p>
+<p  style = "white-space: pre-wrap">{{part5}}</p>
 {% endif %}
-
-
-
 {% if part4 is not null and  dns == "00" %}
-<h1> -------------------------------- </h1>
+<h1 > -------------------------------- </h1>
 {% endif %}
 {% if part4 is not null and dns == "00" %}
-<h1> [.] PYSBIL </h1>
+<h1  > [.] PYSBIL </h1>
 <p style = "white-space: pre-wrap">{{part1}}</p>
 {% endif %}
 {% if part4 is not null and dns == "00" %}
 {% if part4 is not null and dns == "00" %}
-<h1> -------------------------------- </h1>
+<h1  > -------------------------------- </h1>
 {% endif %}
-<h1> [.] AbuseIPDB Result: </h1>
+<h1 > [.] AbuseIPDB Result: </h1>
 {% endif %}
 {% for info1 in part3 %}
-<p style = "white-space: pre-wrap">{{info1}}</p>
+<p  style = "white-space: pre-wrap">{{info1}}</p>
 {% endfor %}
 {% if part4 is not null and dns == "00" %}
-<h1> -------------------------------- </h1>
+<h1  > -------------------------------- </h1>
 {% endif %}
 {% if part4 is not null  %}
-<h1> [.] Sans Result: </h1>
+<h1 > [.] Sans Result: </h1>
 {% endif %}
-{% for info1 in part2 %}
-<p>{{info1}}</p>
-{% endfor %}
+	{% for info1 in part2 %}
+	<p >{{info1}}</p>
+	{% endfor %}
 {% if part4 is not null  %}
-<h1> -------------------------------- </h1>
-{% endif %}
-{% if part4 is not null  %}
-<h1> [.] IPWhoisChecker Result:</h1>
+<h1  > -------------------------------- </h1>
 {% endif %}
 {% if part4 is not null  %}
-<p style = "white-space: pre-wrap">{{part6}}</p>
+<h1  > [.] IPWhoisChecker Result:</h1>
 {% endif %}
 {% if part4 is not null  %}
-<form action = "/loadcip/">
-<button type='submit' name='btn_login' class='col s12 btn btn-large waves-effect' style = "background-color: #008CBA;color: white;">Clear Screen</button>
-</form>
+<p  style = "white-space: pre-wrap">{{part6}}</p>
 {% endif %}
+</div>
 <br>
 <br>
 <br>
 <br>
+</div>
 <div class="footer">
   <div class="container my-auto">
           <div class="copyright text-center my-auto">
@@ -223,4 +287,52 @@ a:hover {
           </div>
         </div>
 </div>
+
+<script>
+// When the user clicks on div, open the popup
+function myFunction() {
+  var popup = document.getElementById("myPopup");
+  popup.classList.toggle("show");
+}
+</script>
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+
+        var data = google.visualization.arrayToDataTable([
+          ['Task', 'Match Score'],
+          ['IBM X-Force',     {{ibm_score}}],
+          ['VirusTotal',      {{virustotal_score}}],
+          ['PYSBIL',  {{pysbil_score}}],
+          ['AbuseIPDB', {{abuseipdb_score}}],
+          ['Sans',    {{sans_score}}]
+        ]);
+
+        var options = {
+         title: 'Output Analysis'
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+        chart.draw(data, options);
+      }
+    </script>
+    <script>
+      function readMore() {
+      var moreText = document.getElementById("more");
+      var btnText = document.getElementById("myBtn");
+
+      if (moreText.style.display === "inline") {
+        btnText.innerHTML = "Click here to check analysis log(more)";
+        moreText.style.display = "none";
+      } else {
+        btnText.innerHTML = "Click here to check analysis log(less)";
+        moreText.style.display = "inline";
+      }
+    }
+    </script>
 {% endblock %}

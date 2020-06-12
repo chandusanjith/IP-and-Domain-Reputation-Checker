@@ -107,6 +107,12 @@ def Contact(request):
       return render(request, 'contactus.html')
 
 def checksingleip(request):
+      match_score = 0
+      pysbil_score =0
+      ibm_score = 0
+      virustotal_score = 0
+      abuseipdb_score = 0
+      sans_score = 0
       ip = request.POST['singleip']
       if ip == '':
           messages.info(request, 'Field is empty!!')
@@ -137,24 +143,37 @@ def checksingleip(request):
               if part5 == "POSSIBLY SAFE" or part5 == "Virus Total Down, API Not responding!!!":
                   res5 = "False"
               else:
+                  match_score = match_score + 20
+                  virustotal_score = 20
                   res5 = "True"
               if part1 == True or part1 == False:
                 ip_checker = pydnsbl.DNSBLIpChecker()
                 result=ip_checker.check(ip)
                 resukt1 = result.detected_by
+              if part1 == True:
+                match_score = match_score + 20
+                pysbil_score = 20
+              
               if part3 != "Local IP Possibly safe" or "er":
                 if not part3:
                     req4 = "False"
                 else:
+                    match_score = match_score + 20
+                    abuseipdb_score = 20
                     req4 = "True"
               else:
                   part3 = " "
+                  
               if  "Malware" in part4[2]:
+                  match_score = match_score + 20
+                  ibm_score = 20
                   req3 = "True"
               else:
                   req3 = "False"               
               if (int(part2[0][13:])) > 0 :
                   req2 = "True"
+                  match_score = match_score + 20
+                  sans_score = 20
               else:
                   req2 = "False"
               if part1 == True or req2 == "True" or req3 == "True" or req4 == "True" or res5 == "True":
@@ -187,6 +206,12 @@ def checksingleip(request):
                       'part6':part6,
                       'status': status,
                       'isip': ip,
+                      'match_score':match_score,
+                      'pysbil_score':pysbil_score,
+                      'ibm_score':ibm_score,
+                      'virustotal_score': virustotal_score,
+                      'abuseipdb_score': abuseipdb_score,
+                      'sans_score': sans_score, 
                       'dns': "00"}
               return render(request, 'checkip.html', context)    
       else:
