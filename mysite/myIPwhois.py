@@ -14,9 +14,11 @@ def IPWhoisChecker(url):
         if url != myResult.url:
             print('Your request has been resolved to ' + myResult.url)
         c = myResult.content
-        soup = BeautifulSoup(c, "lxml")
-
+        soup = BeautifulSoup(c, "lxml") 
         mySoup = soup.find('section', {'id': 'report-wrapper'})
-        preTag = mySoup.find('pre')
+        try:
+           preTag = mySoup.find('pre')
+        except:
+          return "API TAKING MORE TIME!"
         ipWhoisInfo = preTag.text
     return ipWhoisInfo
